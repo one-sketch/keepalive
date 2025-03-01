@@ -7,7 +7,10 @@ body {
     background-color: #f0f8ff;
     font-family: Arial, sans-serif;
     background: url('assets/background.png');
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
 }
 .start-container {
     text-align: center;
