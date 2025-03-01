@@ -45,46 +45,5 @@ body {
 
 }
 
-<<<<<<< HEAD
 @import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
 
-=======
-.task_header{
-    display: center;
-    background: #d1a7d6;
-    color: white;
-    font-weight: bold;
-    font-size: 54px;
-    text-align: center;
-}
-
-.task_window{
-    display: center;
-    background: #d5e8e6;
-    color: white;
-    font-weight: bold;
-    font-size: 23px;
-    border-top-left-radius:6px;
-    border-top-right-radius:6px;
-}
-
-.a_task{
-   list-style-type: none;
-   display: start;
-   color: black;
-   font-weight: bold;
-   font-size: 23px;
-   border-top-left-radius:6px;
-   border-top-right-radius:6px;
-   height: 70px;
-   padding: 0 20px;
-   line-height: 65px;
-   border: 12;
-   border-style: solid;
-   border-color: white;
-}
-.checkbox{
-  position: relative;
-  
-}
->>>>>>> b3e9cda510071c75b4306da53136a5c078852e79
