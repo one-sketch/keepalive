@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+    font-family: Arial, sans-serif;
+}
+.start-container {
+    text-align: center;
+    cursor: pointer;
+}
+.breathing-image {
+    width: 200px;
+    height: 200px;
+    animation: breathing 3s infinite alternate ease-in-out;
+}
+@keyframes breathing {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+.start-text {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #555;
+}
