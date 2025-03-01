@@ -1,0 +1,31 @@
+Intro
+What is this game?
+Keep Alive
+You’re a student taking care of a desk plant as you do your work. It is a sentient, alien, plant that needs your help to recover so it can return to its home planet.
+
+How and when will it be delivered?
+The game will be hosted on github via HTML, CSS, JavaScript
+
+
+Vision
+What is the vision for this game?
+It’ll help raise environmental awareness, particularly when it comes to plant care. It’ll also help with task managing and help the player to pace themselves.
+
+What are the key elements in the game that contribute to the vision?
+Managing your plant buddy with the best kind of soil, water amounts, sunlight exposure, and company
+
+Gameplay
+What’s the core mechanic of the game?
+One-sentence description of the game. Start with a single verb that encapsulates what the player does and translate that to a single mechanic, conveyed in one sentence.
+
+Care for a virtual plant by completing and checking off to earn points that upgrade the plant
+
+What are the rules and make up of the core mechanic?
+Bullet point all the gameplay features.
+
+The player is given a task list of at least three different things they want to do daily 
+The player also sets time limits of each task and is given 30 minutes to come back to the game and check off the ongoing tasks they set
+Based on the amount of time it took to fulfill that task, the player receives some points to spend on equipment for the plant. (min time 10 minutes, max 5 hours)
+The plant needs sufficient amounts of water, sunlight, and quality soil that the player would have to provide by buying them from the store.
+The plant will grow if its needs are met and will eventually leave for its home planet and a new one will replace it
+If the plant is not taken care of it will be sad and die
