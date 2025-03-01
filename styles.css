@@ -6,6 +6,8 @@ body {
     height: 100vh;
     background-color: #f0f8ff;
     font-family: Arial, sans-serif;
+    background: url('assets/background.png');
+    background-size: contain;
 }
 .start-container {
     text-align: center;
