@@ -6,7 +6,7 @@ body {
     height: 100vh;
     background-color: #f0f8ff;
     font-family: Arial, sans-serif;
-    background: url('assets/background.png');
+    background: url('images/background.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -17,8 +17,8 @@ body {
     cursor: pointer;
 }
 .breathing-image {
-    width: 200px;
-    height: 200px;
+    width: 800px;
+    height: 800px;
     animation: breathing 3s infinite alternate ease-in-out;
 }
 @keyframes breathing {
