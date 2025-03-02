@@ -538,3 +538,165 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     updatePointsDisplay(); // Load points when the page loads
 });
+
+function openShopWindow(imageSrc) {
+    let shopWindow = document.getElementById("shopWindow");
+    let shopImage = document.getElementById("shopImage");
+    
+    // Hide all shop contents first
+    document.querySelectorAll(".shop-content").forEach(el => el.classList.add("hidden"));
+
+    console.log("Opening Shop:", "images/" + imageSrc); // Debugging Log
+
+    if (shopImage && shopWindow) {
+        shopImage.src = "images/" + imageSrc + "?" + new Date().getTime();
+        shopWindow.style.display = "block";
+
+        // Show correct shop content
+        if (imageSrc.includes("lightbulbs")) {
+            document.getElementById("bulbShop").classList.remove("hidden");
+        } else if (imageSrc.includes("summon-cloud")) {
+            document.getElementById("rainShop").classList.remove("hidden");
+        } else if (imageSrc.includes("pot_shop")) {
+            document.getElementById("potShop").classList.remove("hidden");
+        } else if (imageSrc.includes("dirt-shop")) {
+            document.getElementById("dirtShop").classList.remove("hidden");
+        }
+    } else {
+        console.error("Shop window or image not found!");
+    }
+}
+
+
+function closeShopWindow() {
+    document.getElementById("shopWindow").style.display = "none";
+}
+
+
+// Function to purchase a bulb and display it
+function purchaseBulb(bulbType, price) {
+    if (points >= price) {
+        points -= price; // Deduct points
+        localStorage.setItem("points", points);
+        updatePointsDisplay(); // Refresh points UI
+
+        let bulbImage = document.getElementById("purchasedBulb");
+        if (bulbImage) {
+            bulbImage.src = `images/${bulbType}.png`; // Set image source dynamically
+            bulbImage.style.display = "block"; // Show the new bulb
+        }
+
+        alert(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
+    } else {
+        alert("❌ Not enough points!");
+    }
+}
+
+// Ensure these buttons trigger the function
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("buyLED").addEventListener("click", function () {
+        purchaseBulb("led", 20);
+    });
+
+    document.getElementById("buyFluorescent").addEventListener("click", function () {
+        purchaseBulb("flourescent", 30);
+    });
+
+    document.getElementById("buyUV").addEventListener("click", function () {
+        purchaseBulb("uv", 50);
+    });
+});
+
+
+
+// Set initial price for summoning the raincloud
+let rainPrice = parseInt(localStorage.getItem("rainPrice")) || 10;
+const rainButton = document.querySelector(".rain-button");
+
+// Function to summon rain & increase price
+function summonRain() {
+    if (points >= rainPrice) {
+        points -= rainPrice; // Deduct points
+        rainPrice += 10; // Increase price for next purchase
+        localStorage.setItem("rainPrice", rainPrice); // Save price
+        localStorage.setItem("points", points); // Save updated points
+
+        updatePointsDisplay(); // Refresh the points display
+        updateRainButton(); // Refresh the button text
+
+        alert("🌧️ Rain summoned! Price has increased.");
+    } else {
+        alert("❌ Not enough points!");
+    }
+}
+
+// Function to update the button text dynamically
+function updateRainButton() {
+    if (rainButton) {
+        rainButton.innerText = `☁️ ${rainPrice} Pts`; // Update price display
+    }
+}
+
+// Ensure the button is updated when the page loads
+document.addEventListener("DOMContentLoaded", function () {
+    updateRainButton(); // Display the correct price on load
+});
+
+
+
+// Prices for different pots
+const potPrices = {
+    "smallPot": 15,
+    "mediumPot": 25,
+    "largePot": 40
+};
+
+// Prices for different dirt types
+const dirtPrices = {
+    "basicDirt": 10,
+    "premiumDirt": 20,
+    "organicDirt": 30,
+    "sandMix": 15,
+    "clayMix": 25,
+    "peatMix": 35
+};
+
+// Function to Buy a Pot
+function buyPot(potType) {
+    const cost = potPrices[potType];
+
+    if (points >= cost) {
+        points -= cost;
+        localStorage.setItem("points", points);
+
+        alert(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        updatePointsDisplay();
+    } else {
+        alert(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+    }
+}
+
+// Function to Buy Dirt
+function buyDirt(dirtType) {
+    const cost = dirtPrices[dirtType];
+
+    if (points >= cost) {
+        points -= cost;
+        localStorage.setItem("points", points);
+
+        alert(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        updatePointsDisplay();
+    } else {
+        alert(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+    }
+}
+
+
+// Function to Update Points Display
+function updatePointsDisplay() {
+    let pointsElement = document.getElementById("pointsDisplay");
+    if (pointsElement) {
+        pointsElement.innerText = `Points: ${points}`;
+    }
+}
+

@@ -65,7 +65,7 @@ body {
     transform: translate(-50%, -50%);
     background: rgb(111, 55, 55);
     padding: 15px; /* Reduced padding */
-    width: auto; /* Set a fixed width */
+    width: 500px; /* Set a fixed width */
     height: auto; /* Set a fixed height */
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
@@ -266,4 +266,95 @@ button:hover {
 #pointsDisplay {
     font-size: 30px;
     font-weight: bold;
+}
+
+/* Container for Light Bulb Buttons */
+.bulb-shop {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* Reduce gap for 5 buttons */
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allows wrapping if needed */
+}
+.buy-button {
+    background-color: #7a4caf; /* Purple background */
+    color: white;
+    font-family: 'Dangrek', sans-serif;
+    font-size: 19px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 30%; /* Make buttons take up most of the container */
+    
+    max-width: 140px; /* Prevent them from being too wide */
+    text-align: center;
+}
+
+.buy-button:hover {
+    background-color: #bfa6e1;
+    border-color: #8a79b1;
+    transform: scale(1.05); /* Slight grow effect */
+
+}
+
+/* Center the shop content */
+.shop-content {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap into multiple rows */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px; /* Reduce spacing to fit all buttons */
+    padding: 20px;
+}
+
+/* Rain Shop Button */
+.rain-shop {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.rain-button {
+    background-color: #a6dcef;
+    border: 2px solid #4d92b8;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-family: "Dangrek", sans-serif;
+    font-size: 16px;
+    color: #285a75;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.rain-button:hover {
+    background-color: #89c6e5;
+    border-color: #357399;
+}
+
+/* Hide by default */
+.hidden {
+    display: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+    flex-wrap: wrap;
+    width: 100%; /* Ensure buttons stay within the shop window */
+}
+
+/* Lightbulb Display (Position Under Background Lightbulb) */
+#purchasedBulb {
+    position: absolute;
+    top: 35%; /* Adjust to fit under the background bulb */
+    left: 42%;
+    transform: translateX(-50%);
+    width: 400px; /* Adjust as needed */
+    height: auto;
+    display: none; /* Hidden by default */
+    z-index: 5; /* Ensure it's visible but not above UI elements */
 }
