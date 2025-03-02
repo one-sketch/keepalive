@@ -91,7 +91,7 @@ function addTask() {
     let duration = parseInt(durationInput.value, 10);
 
     if (taskText === "" || isNaN(duration) || duration <= 0) {
-        alert("Please enter a valid task and duration!");
+        showPopup("Please enter a valid task and duration!");
         return;
     }
 
@@ -359,9 +359,9 @@ function completeTask(taskId) {
     // Award points if completed in time
     if (isWithinTime) {
         points += 10;
-        alert(`✅ Task completed on time! +10 points. Total: ${points}`);
+        showPopup(`✅ Task completed on time! +10 points. Total: ${points}`);
     } else {
-        alert("⏳ Time expired! No points awarded.");
+        showPopup("⏳ Time expired! No points awarded.");
     }
 
     // Mark task as completed
@@ -586,9 +586,9 @@ function purchaseBulb(bulbType, price) {
             bulbImage.style.display = "block"; // Show the new bulb
         }
 
-        alert(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
+        showPopup(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
     } else {
-        alert("❌ Not enough points!");
+        showPopup("❌ Not enough points!");
     }
 }
 
@@ -644,9 +644,9 @@ function summonRain() {
             }
         }, 10000);
 
-        alert(`🌧️ Raincloud summoned! New price: ${rainCloudPrice} points.`);
+        showPopup(`🌧️ Raincloud summoned! New price: ${rainCloudPrice} points.`);
     } else {
-        alert("❌ Not enough points!");
+        showPopup("❌ Not enough points!");
     }
 }
 
@@ -686,10 +686,10 @@ function buyPot(potType) {
         points -= cost;
         localStorage.setItem("points", points);
 
-        alert(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        showPopup(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
         updatePointsDisplay();
     } else {
-        alert(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
     }
 }
 
@@ -701,10 +701,10 @@ function buyDirt(dirtType) {
         points -= cost;
         localStorage.setItem("points", points);
 
-        alert(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        showPopup(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
         updatePointsDisplay();
     } else {
-        alert(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
     }
 }
 
@@ -717,3 +717,17 @@ function updatePointsDisplay() {
     }
 }
 
+
+// Function to Show a Nice Pop-Up Message
+function showPopup(message) {
+    let popup = document.createElement("div");
+    popup.classList.add("popup-message");
+    popup.innerText = message;
+
+    document.body.appendChild(popup);
+
+    // Auto-remove pop-up after 3 seconds
+    setTimeout(() => {
+        popup.remove();
+    }, 3000);
+}
