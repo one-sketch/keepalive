@@ -17,6 +17,7 @@ body {
     width: 100vmin; 
     height: 100vmin;
     border: solid 5px;
+    border-color: rgb(79, 8, 79);
 }
 
 
@@ -47,3 +48,28 @@ body {
 
 @import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
 
+/* Invisible Clickable Area Over Notebook */
+.click-area {
+    position: absolute;
+    left: 40%; /* Adjust this value based on the notebook's position */
+    top: 85%; /* Adjust this value based on where the notebook starts */
+    width: 20%; /* Adjust the size to match the notebook */
+    height: 15%; /* Adjust to match the notebook height */
+    cursor: pointer;
+    background: rgba(255, 0, 0, 0); /* Temporary red overlay for debugging */
+}
+
+/* Task Window (Initially Hidden) */
+.task-window {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none; /* Hidden initially */
+    z-index: 10;
+}

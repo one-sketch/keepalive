@@ -8,50 +8,17 @@
   </head>
   <body>
     <img src="images/desk.png" alt="Desk Background" class="desk">
+    <div class="click-area" onclick="toggleTaskWindow()"></div>
+  </div>
 
-    <div>
-        <h2 class = "task_header">
-          Tasks
-        </h2>
-        <ul class="task_window">
-            <li class = "a_task">
-                Task1
-              <div class = "checkbox">
-                <div class = "check">
-                  <input type = "checkbox" name = "task_00">
-                  <div class = "check-container">
-                    <div class = "check-off"></div>
-                    <div class = "check-on"></div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class = "a_task">
-                Task2
-              <div class = "checkbox">
-                <div class = "check">
-                  <input type = "checkbox" name = "task_00">
-                  <div class = "check-container">
-                    <div class = "check-off"></div>
-                    <div class = "check-on"></div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          <li class = "a_task">
-                Task3
-            <div class = "checkbox">
-                <div class = "check">
-                  <input type = "checkbox" name = "task_00">
-                  <div class = "check-container">
-                    <div class = "check-off"></div>
-                    <div class = "check-on"></div>
-                  </div>
-                </div>
-              </div>
-            </li>
-        </ul>
-      </div>
+  <div class="task-window" id="taskWindow">
+    <h2 class="task_header">Tasks</h2>
+    <ul class="task_list">
+        <li class="a_task">Task 1 <input type="checkbox"></li>
+        <li class="a_task">Task 2 <input type="checkbox"></li>
+        <li class="a_task">Task 3 <input type="checkbox"></li>
+    </ul>
+</div>
     <script src="index.js"></script>
   </body>
 </html>
