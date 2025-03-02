@@ -236,6 +236,77 @@ function loadTasksFromStorage() {
     }
 }
 
+
+function completeTask(taskId) {
+    let checkBox = document.getElementById(taskId);
+    if (!checkBox) {
+        console.error(`Checkbox for task ${taskId} not found!`);
+        return;
+    }
+
+    // Prevent awarding points if already completed
+    if (!tasks[taskId] || tasks[taskId].completed) {
+        console.log(`Task ${taskId} is already completed or not found.`);
+        return;
+    }
+
+    let now = Date.now();
+    let isWithinTime = false;
+
+    // If completionStartTime exists, check if within 30-minute window
+    if (tasks[taskId].completionStartTime) {
+        let timeElapsed = now - tasks[taskId].completionStartTime;
+        isWithinTime = timeElapsed <= (30 * 60 * 1000); // 30 minutes in ms
+    } else {
+        let timeElapsed = now - tasks[taskId].startTime;
+        isWithinTime = timeElapsed <= (tasks[taskId].duration * 1000);
+    }
+
+    // Award points only if completed in time
+    if (isWithinTime) {
+        let taskDurationMinutes = tasks[taskId].duration / 60;
+        let earnedPoints = taskDurationMinutes >= 60 ? 20 : 10; // 20 points for 60 mins, else 10
+        points += earnedPoints;
+
+        showPopup(`✅ Task completed on time! +${earnedPoints} points. Total: ${points}`);
+        localStorage.setItem("points", points);
+        updatePointsDisplay(); // Refresh UI
+    } else {
+        showPopup("⏳ Time expired! No points awarded.");
+    }
+
+    // Mark task as completed
+    tasks[taskId].completed = true;
+
+    // Stop any running timers
+    if (tasks[taskId].timerInterval) {
+        clearInterval(tasks[taskId].timerInterval);
+        tasks[taskId].timerInterval = null;
+    }
+
+    if (tasks[taskId].completionInterval) {
+        clearInterval(tasks[taskId].completionInterval);
+        tasks[taskId].completionInterval = null;
+    }
+
+    // Update UI
+    let timerDisplay = document.getElementById(`timer-${taskId}`);
+    if (timerDisplay) {
+        timerDisplay.innerText = "✅ COMPLETED";
+        timerDisplay.style.color = "green"; // Make it clear
+    }
+
+    // Disable checkbox after completion
+    checkBox.disabled = true;
+
+    // Save updated points and tasks
+    saveTasksToStorage();
+}
+
+
+
+
+
 // Start User-defined Task Timer
 function startTaskTimer(taskId) {
     if (!tasks[taskId]) {
@@ -679,15 +750,6 @@ const potPrices = {
     "largePot": 40
 };
 
-// Prices for different dirt types
-const dirtPrices = {
-    "basicDirt": 10,
-    "premiumDirt": 20,
-    "organicDirt": 30,
-    "sandMix": 15,
-    "clayMix": 25,
-    "peatMix": 35
-};
 
 // Function to Buy a Pot
 function buyPot(potType) {
@@ -704,19 +766,42 @@ function buyPot(potType) {
     }
 }
 
-// Function to Buy Dirt
-function buyDirt(dirtType) {
-    const cost = dirtPrices[dirtType];
+const dirtPrices = {
+    "Sandy Soil": 10,
+    "Clay Soil": 20,
+    "Rich Soil": 30,
+    "Peaty Soil": 15,
+    "Loamy Soil": 25,
+    "Chalky Soil": 35
+};
 
-    if (points >= cost) {
-        points -= cost;
+// Function to buy soil
+function buySoil(dirtType) {
+    let dirtPrice = dirtPrices[dirtType];
+
+    if (points >= dirtPrice) {
+        points -= dirtPrice; // Deduct points
+        soilEnjoyment = true; // Soil is now good
+        localStorage.setItem("soilEnjoyment", true);
+        localStorage.setItem("dirtType", dirtType);
         localStorage.setItem("points", points);
-
-        showPopup(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
         updatePointsDisplay();
+        updateDougState();
+
+        showPopup(`You bought ${dirtType}! Doug is happy with his new soil.`);
     } else {
-        showPopup(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup("Not enough points to buy this soil.");
     }
+}
+
+// Function to check current soil type
+function checkSoil() {
+    let dirtType = localStorage.getItem("dirtType") || "Basic Soil"; // Default if none purchased
+    let soilStatus = soilEnjoyment ? "enjoys" : "doesn't like";
+
+    console.log(`Doug is currently in ${dirtType}. He ${soilStatus} the soil.`);
+
+    showPopup(`Doug is in ${dirtType}. ${soilEnjoyment ? "He likes it!" : "He needs new soil!"}`);
 }
 
 
