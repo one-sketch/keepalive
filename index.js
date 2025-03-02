@@ -42,8 +42,21 @@ document.addEventListener("DOMContentLoaded", updatePointsDisplay);
 
 // **Start Game**
 function startGame() {
-    window.location.href = 'game.html'; 
+    // Reset Doug's state
+    localStorage.setItem("waterAmount", 0);
+    localStorage.setItem("sunAmount", 0);
+    localStorage.setItem("soilEnjoyment", true);
+    localStorage.setItem("points", 0);
+    localStorage.setItem("selectedBulb", "fluorescent");
+    localStorage.setItem("dirtType", "Basic Soil"); // Default soil type
+    localStorage.setItem("rainCloudPrice", 10); // Reset rain price
+
+    console.log("Game Reset: Doug's state is fresh!");
+
+    // Reload the page to apply changes
+    window.location.reload();
 }
+
 
 // **Open/Close Task Window**
 function toggleTaskWindow() {
