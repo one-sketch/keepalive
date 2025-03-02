@@ -14,10 +14,11 @@ body {
 }
 
 .plantBuddy{
-    width: 24vmin; 
-    height: 24vmin;
-    border: solid 5px;
-    border-color: rgb(79, 8, 79);
+    width: 28vmin; 
+    height: 28vmin;
+    position: absolute;
+    left: 44%;
+    top: 42%;
 }
 
 .desk{
