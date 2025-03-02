@@ -319,71 +319,69 @@ function startCompletionWindow(taskId) {
 
     tasks[taskId].completionInterval = completionInterval;
 }
-function completeTask(taskId) {
-    let checkBox = document.getElementById(taskId);
-    if (!checkBox) {
-        console.error(`Checkbox for task ${taskId} not found!`);
-        return;
-    }
-
-    // Check if task exists and isn't already completed
-    if (!tasks[taskId] || tasks[taskId].completed) {
-        console.log(`Task ${taskId} is already completed or not found.`);
-        return;
-    }
-
-    // Stop the main task timer if it's still running
-    if (tasks[taskId].timerInterval) {
-        clearInterval(tasks[taskId].timerInterval);
-        tasks[taskId].timerInterval = null;
-    }
-
-    // Stop the completion timer if it's still running
-    if (tasks[taskId].completionInterval) {
-        clearInterval(tasks[taskId].completionInterval);
-        tasks[taskId].completionInterval = null;
-    }
-
-    // Determine if task is completed within time window
+// **Doug's Life System (Runs in Background)**
+function updateDougState() {
     let now = Date.now();
-    let isWithinTime = false;
 
-    if (tasks[taskId].completionStartTime) {
-        let timeElapsed = now - tasks[taskId].completionStartTime;
-        isWithinTime = timeElapsed <= (30 * 60 * 1000); // 30 minutes in ms
+    console.log("🔄 Checking Doug's State...");
+    console.log("💧 Water Amount:", waterAmount);
+    console.log("☀️ Sun Amount:", sunAmount);
+    console.log("🌱 Soil Enjoyment:", soilEnjoyment);
+
+    // Ensure `sunAmount` doesn't reset incorrectly
+    sunAmount = parseInt(localStorage.getItem("sunAmount"));
+    if (isNaN(sunAmount)) sunAmount = 0;
+
+    let correctBulb = ["fluorescent", "led", "ultraviolet"].includes(selectedBulb);
+    let newGif = "images/Happy_Bud.gif"; // Default (Happy Bud)
+
+    // **Sad Bud Condition (Not enough water, but sunlight & soil are okay)**
+    if (waterAmount < 3 && sunAmount >= 3 && soilEnjoyment) {
+        newGif = "images/Sad_Bud.gif";
+    }
+    // **Sad Sprout Condition (Enough water but NOT enough sunlight)**
+    else if (waterAmount >= 3 && sunAmount < 3 && soilEnjoyment) {
+        newGif = "images/Sad_Sprout.gif";
+    }
+    // **Sad Bloom Condition (Water & Sunlight okay, but Bad Soil)**
+    else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
+        newGif = "images/Sad_Bloom.gif";
+    }
+    // **Happy Sprout Condition (Good Water, Sunlight, Soil, and a Bulb)**
+    else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Sprout.gif";
+    }
+    // **Happy Bloom Condition (High Water, Sunlight, Soil, and a Bulb)**
+    else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Bloom.gif";
+    }
+
+    // **Update only if Doug’s state has changed**
+    if (dougImage.src !== newGif) {
+        console.log("🖼️ Updating Doug to:", newGif);
+        dougImage.src = newGif + "?" + new Date().getTime(); // Force browser refresh
     } else {
-        let timeElapsed = now - tasks[taskId].startTime;
-        isWithinTime = timeElapsed <= (tasks[taskId].duration * 1000);
+        console.log("✅ Doug's state is already correct, no update needed.");
     }
 
-    // Award points if completed in time
-    if (isWithinTime) {
-        points += 10;
-        showPopup(`✅ Task completed on time! +10 points. Total: ${points}`);
-    } else {
-        showPopup("⏳ Time expired! No points awarded.");
+    // **Save game state**
+    localStorage.setItem("waterAmount", waterAmount);
+    localStorage.setItem("sunAmount", sunAmount);
+    localStorage.setItem("soilEnjoyment", soilEnjoyment);
+
+    // **Update status message**
+    if (messageBox) {
+        let statusMessage = "Doug is ";
+        statusMessage += newGif.includes("Happy") ? "😊 happy! " : "😢 sad. ";
+
+        if (waterAmount < 3) statusMessage += "💧 Needs more water. ";
+        if (sunAmount < 3) statusMessage += "☀️ Needs more sunlight. ";
+        if (!soilEnjoyment) statusMessage += "🌱 Doesn't like the soil. ";
+
+        messageBox.innerText = statusMessage;
     }
-
-    // Mark task as completed
-    tasks[taskId].completed = true;
-
-    // Update UI to show completed status
-    let timerDisplay = document.getElementById(`timer-${taskId}`);
-    if (timerDisplay) {
-        timerDisplay.innerText = "✅ COMPLETED";
-        timerDisplay.style.color = "green"; // Make it clear
-    }
-
-    // Disable the checkbox so users can't uncheck it
-    checkBox.disabled = true;
-
-    // Save updated points and tasks
-    localStorage.setItem("points", points);
-    saveTasksToStorage();
-
-    // **Automatically Refresh the Points Window**
-    updatePointsDisplay();
 }
+
 
 
 // **24-Hour Clock**
@@ -492,13 +490,26 @@ function checkSoil() {
 // **Change Light Bulb**
 function changeBulb(bulbType) {
     selectedBulb = bulbType;
-    sunAmount += 1;
+
+    // Adjust sunlight based on bulb quality
+    if (bulbType === "ultraviolet") {
+        sunAmount += 5; // Best bulb
+    } else if (bulbType === "led") {
+        sunAmount += 3; // Okay bulb
+    } else if (bulbType === "fluorescent") {
+        sunAmount += 1; // Worst bulb
+    }
+
+    // Save new values
     localStorage.setItem("selectedBulb", selectedBulb);
     localStorage.setItem("sunAmount", sunAmount);
-    
-    console.log("Bulb changed to:", bulbType, "Sun amount:", sunAmount);
-    updateDougState(); // Immediately update Doug's state
+
+    console.log("💡 Bulb changed to:", bulbType);
+    console.log("☀️ New Sun Amount:", sunAmount);
+
+    updateDougState(); // Update Doug immediately
 }
+
 
 // **Game Loop**
 setInterval(updateDougState, 60 * 1000);
