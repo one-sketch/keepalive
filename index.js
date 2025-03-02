@@ -1,3 +1,7 @@
+let waterAmount = 0;
+let sunAmount = 0;
+let soilEnjoyment = true;
+
 function startGame() {
     window.location.href = 'game.html'; 
 }
