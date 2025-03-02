@@ -22,7 +22,39 @@ body {
     font-family: 'Dangrek', sans-serif;
     font-weight: 400;
     font-style: normal;
-  }  
+}  
+
+.shutterTransition{
+    display: flex;
+    background: white;
+    animation: shutter 1s;
+}
+
+.shutterTransition[active]
+{
+    display: flex;
+    animation: moving;
+}
+
+@keyframes moving{
+    0%{
+        transform: skewY(60px);
+    }
+    100%{
+        transform: skewY(-60px);
+    }
+}
+
+@keyframes shutter {
+    0%{
+        display: flex;
+        opacity: 100;
+    }
+    100%{
+        display: none;
+        opacity: 0;
+    }
+}
 
 .plantBuddy{
     width: 28vmin; 
