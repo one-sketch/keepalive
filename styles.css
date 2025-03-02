@@ -22,7 +22,39 @@ body {
     font-family: 'Dangrek', sans-serif;
     font-weight: 400;
     font-style: normal;
-  }  
+}  
+
+.shutterTransition{
+    display: flex;
+    background: white;
+    animation: shutter 1s;
+}
+
+.shutterTransition[active]
+{
+    display: flex;
+    animation: moving;
+}
+
+@keyframes moving{
+    0%{
+        transform: skewY(60px);
+    }
+    100%{
+        transform: skewY(-60px);
+    }
+}
+
+@keyframes shutter {
+    0%{
+        display: flex;
+        opacity: 100;
+    }
+    100%{
+        display: none;
+        opacity: 0;
+    }
+}
 
 .plantBuddy{
     width: 28vmin; 
@@ -357,32 +389,4 @@ button:hover {
     height: auto;
     display: none; /* Hidden by default */
     z-index: 5; /* Ensure it's visible but not above UI elements */
-}
-
-
-
-/* Rain Cloud Animation (Appears Above Doug) */
-.rain-cloud {
-    position: absolute;
-    top: 20%; /* Adjust so it floats above Doug */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px; /* Adjust based on your image */
-    height: auto;
-    display: none; /* Hidden by default */
-    z-index: 10; /* Ensures it appears above Doug */
-    opacity: 0.9; /* Slight transparency for realism */
-    
-    /* Animation: Float Up and Down */
-    animation: cloudFloat 3s infinite alternate ease-in-out;
-}
-
-/* Floating Cloud Effect */
-@keyframes cloudFloat {
-    0% {
-        transform: translateX(-50%) translateY(0);
-    }
-    100% {
-        transform: translateX(-50%) translateY(-10px);
-    }
 }
