@@ -13,6 +13,16 @@
   </div>
 
 <h2 class="plantshop">Plant Care</h2>
+<div class="button-container">
+  <button class="shop-button" onclick="openShop('shop1.png')" style="left: 15%;">Open</button>
+  <button class="shop-button" onclick="openShop('shop2.png')" style="left: 35%;">Open</button>
+  <button class="shop-button" onclick="openShop('shop3.png')" style="left: 55%;">Open</button>
+  <button class="shop-button" onclick="openShop('shop4.png')" style="left: 75%;">Open</button>
+</div>
+
+<div id="shopWindow" class="shop-window">
+  <span class="close-btn" onclick="closeShop()">&times;</span>
+  <img id="shopImage" src="" alt="Shop Window">
 
   <div class="task-window" id="taskWindow">
     <h2 class="task_header">Tasks</h2>
