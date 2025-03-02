@@ -1,7 +1,7 @@
 // Load from local storage or set default values
-let lastWatered = localStorage.getItem("lastWatered") || Date.now();
-let lastSoilCheck = localStorage.getItem("lastSoilCheck") || Date.now();
-let gameStart = localStorage.getItem("gameStart") || Date.now();
+let lastWatered = parseInt(localStorage.getItem("lastWatered")) || Date.now();
+let lastSoilCheck = parseInt(localStorage.getItem("lastSoilCheck")) || Date.now();
+let gameStart = parseInt(localStorage.getItem("gameStart")) || Date.now();
 let selectedBulb = localStorage.getItem("selectedBulb") || "fluorescent"; // Default bulb type
 
 // Environmental Variables (Backend-Only)
@@ -14,31 +14,31 @@ const waterInterval = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 const soilCheckInterval = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
 const gameCheckInterval = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
 
-const dougeImage = document.getElementsByClassName("plantbuddy");
+// Elements
+const dougImage = document.getElementById("dougImage");
 const messageBox = document.getElementById("statusMessage");
 
 let tasks = {}; // Store tasks and their timers
 let points = 0;
 
-
+// **Start Game**
 function startGame() {
     window.location.href = 'game.html'; 
 }
 
+// **Open/Close Task Window**
 function toggleTaskWindow() {
     let taskWindow = document.getElementById("taskWindow");
-
     taskWindow.style.display = (taskWindow.style.display === "block") ? "none" : "block";
 }
 
+// **Shop System**
 function openShop(imageSrc) {
     let shopWindow = document.getElementById("shopWindow");
     let shopImage = document.getElementById("shopImage");
 
-    // Debugging: Check image path in Console
     console.log("Loading image:", "images/" + imageSrc);
-
-    // Ensure the shop window is set up correctly
+    
     if (shopImage && shopWindow) {
         shopImage.src = "images/" + imageSrc;
         shopWindow.style.display = "block"; // Show the shop window
@@ -51,13 +51,7 @@ function closeShop() {
     document.getElementById("shopWindow").style.display = "none";
 }
 
-// Toggle Task Window
-function toggleTaskWindow() {
-    let taskWindow = document.getElementById("taskWindow");
-    taskWindow.style.display = (taskWindow.style.display === "block") ? "none" : "block";
-}
-
-// Add Task
+// **Task System**
 function addTask() {
     let taskInput = document.getElementById("newTask");
     let taskText = taskInput.value.trim();
@@ -66,7 +60,6 @@ function addTask() {
 
     let taskId = "task-" + Date.now(); // Unique ID for task
 
-    // Create Task Element
     let li = document.createElement("li");
     li.classList.add("a_task");
     li.innerHTML = `
@@ -77,7 +70,6 @@ function addTask() {
 
     document.getElementById("taskList").appendChild(li);
     
-    // Start Timer
     tasks[taskId] = {
         startTime: Date.now(),
         timerInterval: startTimer(taskId)
@@ -86,7 +78,7 @@ function addTask() {
     taskInput.value = ""; // Clear input field
 }
 
-// Start 30-Minute Timer
+// **30-Minute Timer for Task Completion**
 function startTimer(taskId) {
     let timeLeft = 30 * 60; // 30 minutes in seconds
     let timerDisplay = document.getElementById(`timer-${taskId}`);
@@ -104,7 +96,7 @@ function startTimer(taskId) {
     }, 1000);
 }
 
-// Complete Task & Award Points
+// **Complete Task & Award Points**
 function completeTask(taskId) {
     let checkBox = document.getElementById(taskId);
     if (checkBox.checked) {
@@ -112,12 +104,12 @@ function completeTask(taskId) {
         let timeLeft = 30 * 60 * 1000 - taskTime; // Convert to milliseconds
 
         if (timeLeft > 0) {
-            points += 10; // Base points for completing on time
-            waterAmount += 1; // Increase water
-            sunAmount += 1; // Increase sun exposure
+            points += 10; // Base points
+            waterAmount += 1;
+            sunAmount += 1;
 
             if (soilEnjoyment) {
-                points += 5; // Bonus points if soilEnjoyment is true
+                points += 5; // Bonus points
                 alert(`Task completed on time! +10 points (+5 soil bonus). Total: ${points}`);
             } else {
                 alert(`Task completed on time! +10 points. Total: ${points}`);
@@ -131,7 +123,7 @@ function completeTask(taskId) {
     }
 }
 
-// 24-Hour Clock Function
+// **24-Hour Clock**
 function updateClock() {
     let now = new Date();
     let hours = now.getHours();
@@ -141,60 +133,53 @@ function updateClock() {
     let timeString = `${hours}:${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     document.getElementById("clock").innerText = "Current Time: " + timeString;
 }
-
 setInterval(updateClock, 1000); // Update clock every second
 
-
-
-// Background Logic (No UI)
+// **Doug’s Life System (Runs in Background)**
 function updateDougState() {
     let now = Date.now();
 
-    // Water Check
-    let timeSinceWater = now - lastWatered;
-    if (timeSinceWater >= waterInterval) {
-        waterAmount = 0;
-        alert("Doug is thirsty! Water him to keep him alive.");
+    console.log("Checking Doug's State...");
+    console.log("Water Amount:", waterAmount);
+    console.log("Sun Amount:", sunAmount);
+    console.log("Soil Enjoyment:", soilEnjoyment);
+
+    let correctBulb = (selectedBulb === "fluorescent" || selectedBulb === "led" || selectedBulb === "ultraviolet");
+    let newGif = "images/Happy_Bud.gif"; // Default (Happy Bud)
+
+    // **Sad Bud Condition (Water < 3, Sunlight ≥ 3, Soil Good)**
+    if (waterAmount < 3 && sunAmount >= 3 && soilEnjoyment) {
+        newGif = "images/Sad_Bud.gif";
+    }
+    // **Sad Sprout Condition (Water ≥ 3 but Sun < 3)**
+    else if (waterAmount >= 3 && sunAmount < 3 && soilEnjoyment) {
+        newGif = "images/Sad_Sprout.gif";
+    }
+    // **Sad Bloom Condition (Water & Sunlight okay, but Bad Soil)**
+    else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
+        newGif = "images/Sad_Bloom.gif";
+    }
+    // **Happy Sprout Condition**
+    else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Sprout.gif";
+    }
+    // **Happy Bloom Condition**
+    else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Bloom.gif";
     }
 
-    // Sunlight Check
-    if (sunAmount === 0 && waterAmount > 0) {
-        alert("Doug needs sunlight! Turn on a lamp.");
-    }
+    console.log("Updating Doug to:", newGif);
+    dougImage.src = newGif + "?" + new Date().getTime();
+}
 
-    // Soil Check
-    let timeSinceSoilCheck = now - lastSoilCheck;
-    if (timeSinceSoilCheck >= soilCheckInterval) {
-        soilEnjoyment = false;
-        alert("Doug needs new soil! Please check his soil condition.");
-    }
-
-    // Check Doug’s Health Every 3 Days
-    let timeSinceGameStart = now - gameStart;
-    if (timeSinceGameStart >= gameCheckInterval) {
-        let correctBulb = (selectedBulb === "fluorescent" || selectedBulb === "led" || selectedBulb === "ultraviolet");
-
-        // Check if Doug is happy or sad
-        if (timeSinceWater < waterInterval && soilEnjoyment && correctBulb) {
-            dougImage.src = "images/happy-bud.gif"; // Doug is happy
-        } else {
-            dougImage.src = "images/sad-bud.gif"; // Doug is sad
-        }
-
-        // Reset game start time for next check
-        gameStart = Date.now();
-        localStorage.setItem("gameStart", gameStart);
-    }
-
-    // Save data in localStorage
+    // Save game state
     localStorage.setItem("waterAmount", waterAmount);
     localStorage.setItem("sunAmount", sunAmount);
     localStorage.setItem("soilEnjoyment", soilEnjoyment);
-}
 
-// **Backend-Only Functions (No Visible UI)**
 
-// Water Doug (Triggered Internally)
+
+// **Trigger Watering**
 function waterDoug() {
     lastWatered = Date.now();
     waterAmount += 1;
@@ -202,21 +187,21 @@ function waterDoug() {
     localStorage.setItem("waterAmount", waterAmount);
 }
 
-// Check Soil (Triggered Internally)
+// **Trigger Soil Check**
 function checkSoil() {
     lastSoilCheck = Date.now();
-    soilEnjoyment = Math.random() > 0.2; // 80% chance soil is still good
+    soilEnjoyment = Math.random() > 0.2; // 80% chance soil is good
     localStorage.setItem("lastSoilCheck", lastSoilCheck);
     localStorage.setItem("soilEnjoyment", soilEnjoyment);
 }
 
-// Change Light Bulb (Triggered Internally)
+// **Change Light Bulb**
 function changeBulb(bulbType) {
     selectedBulb = bulbType;
-    sunAmount += 1; // Simulates turning on a lamp
+    sunAmount += 1;
     localStorage.setItem("selectedBulb", selectedBulb);
     localStorage.setItem("sunAmount", sunAmount);
 }
 
-// Game Loop (Runs in the background every minute)
-setInterval(updateDougState, 60 * 1000); // Every 1 minute
+// **Game Loop**
+setInterval(updateDougState, 60 * 1000);

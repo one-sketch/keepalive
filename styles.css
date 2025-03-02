@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
+
+
 body {
     margin: 0;
     display: flex;
@@ -133,8 +136,6 @@ body {
     color: #555;
 
 }
-
-@import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
 
 /* Invisible Clickable Area Over Notebook */
 .click-area {
