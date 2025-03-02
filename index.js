@@ -783,44 +783,53 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
 const potPrices = {
-    "fancy_pot": 15,
-    "terracota_pot": 25,
-    "white_plastic_cup": 40
+    "terracota_pot": 15,
+    "white_plastic_cup": 25,
+    "fancy_pot": 50
 };
 
 function buyPot(potType) {
     const cost = potPrices[potType];
 
     if (points >= cost) {
-        points -= cost;
+        points -= cost; // Deduct points
         localStorage.setItem("points", points);
-        localStorage.setItem("selectedPot", potType);
-        updatePointsDisplay();
+        updatePointsDisplay(); // Refresh points UI
 
-        // Show the purchased pot image
-        let potImage = document.getElementById("purchasedPot");
-        if (potImage) {
-            potImage.src = `images/${potType}.png`; // Set image source dynamically
-            potImage.style.display = "block"; // Show the new pot
+        // Ensure pots are purchased in the correct order
+        localStorage.setItem("purchasedPot", potType);
+        showPurchasedPot(); // Show the correct pot image
+
+        // Change background once the first pot is bought
+        let deskImage = document.querySelector(".desk");
+        if (deskImage) {
+            deskImage.src = "images/desk_no_mug.png"; // Update background
+            localStorage.setItem("deskBackground", "images/desk_no_mug.png");
         }
 
-        showPopup(`🪴 You bought a ${potType.replace("_", " ")}! (-${cost} points)`);
+        showPopup(`🪴 You purchased a ${potType.replace(/_/g, " ")}!`);
     } else {
-        showPopup(`❌ Not enough points! ${potType.replace("_", " ")} costs ${cost} points.`);
+        showPopup("❌ Not enough points!");
     }
 }
 
-// Load the selected pot when the page refreshes
-document.addEventListener("DOMContentLoaded", function () {
-    let selectedPot = localStorage.getItem("selectedPot");
-    if (selectedPot) {
-        let potImage = document.getElementById("purchasedPot");
-        if (potImage) {
-            potImage.src = `images/${selectedPot}.png`;
-            potImage.style.display = "block";
-        }
+// Function to display the purchased pot
+function showPurchasedPot() {
+    let potImage = document.getElementById("purchasedPot");
+    let purchasedPot = localStorage.getItem("purchasedPot");
+
+    if (potImage && purchasedPot) {
+        potImage.src = `images/${purchasedPot}.png`;
+        potImage.style.display = "block"; // Make sure it's visible
     }
+}
+
+// Ensure the pot stays visible on reload
+document.addEventListener("DOMContentLoaded", function () {
+    showPurchasedPot(); // Load the correct pot
+    updatePointsDisplay(); // Update points UI
 });
 
 
