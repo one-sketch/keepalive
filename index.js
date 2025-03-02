@@ -10,8 +10,12 @@ function toggleTaskWindow() {
 function openShop(imageSrc) {
     let shopWindow = document.getElementById("shopWindow");
     let shopImage = document.getElementById("shopImage");
-    
-    shopImage.src = "images/" + imageSrc; // Set the shop image
+
+    // Debugging: Check image path
+    console.log("Loading image:", "images/" + imageSrc);
+
+    // Set the shop image source
+    shopImage.src = "images/" + imageSrc;
     shopWindow.style.display = "block"; // Show the shop window
 }
 
