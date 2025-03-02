@@ -787,7 +787,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const potPrices = {
     "terracota_pot": 15,
     "white_plastic_cup": 25,
-    "fancy_pot": 50
+    "fancy_pot": 45
 };
 
 function buyPot(potType) {
@@ -802,11 +802,14 @@ function buyPot(potType) {
         localStorage.setItem("purchasedPot", potType);
         showPurchasedPot(); // Show the correct pot image
 
-        // Change background once the first pot is bought
+        // **Only update the background once on first purchase**
         let deskImage = document.querySelector(".desk");
-        if (deskImage) {
+        let backgroundChanged = localStorage.getItem("deskBackgroundChanged");
+
+        if (deskImage && !backgroundChanged) {
             deskImage.src = "images/desk_no_mug.png"; // Update background
             localStorage.setItem("deskBackground", "images/desk_no_mug.png");
+            localStorage.setItem("deskBackgroundChanged", "true"); // Prevents multiple updates
         }
 
         showPopup(`🪴 You purchased a ${potType.replace(/_/g, " ")}!`);
@@ -826,11 +829,20 @@ function showPurchasedPot() {
     }
 }
 
-// Ensure the pot stays visible on reload
+// Ensure the pot stays visible & background stays changed on reload
 document.addEventListener("DOMContentLoaded", function () {
     showPurchasedPot(); // Load the correct pot
     updatePointsDisplay(); // Update points UI
+
+    // Ensure background remains updated if a pot was bought
+    let savedDesk = localStorage.getItem("deskBackground");
+    let deskImage = document.querySelector(".desk");
+    if (savedDesk && deskImage) {
+        deskImage.src = savedDesk; // Ensure desk stays updated
+    }
 });
+
+
 
 
 const dirtPrices = {
