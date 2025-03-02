@@ -431,68 +431,61 @@ setInterval(updateClock, 1000); // Update clock every second
 
 function updateDougState() {
     console.log("🔄 Checking Doug's State...");
-
-    // Ensure the latest values are loaded
-    waterAmount = parseInt(localStorage.getItem("waterAmount")) || 0;
-    sunAmount = parseInt(localStorage.getItem("sunAmount")) || 0;
-    soilEnjoyment = localStorage.getItem("soilEnjoyment") === "true"; // Convert string to boolean
-
     console.log("💧 Water Amount:", waterAmount);
     console.log("☀️ Sun Amount:", sunAmount);
     console.log("🌱 Soil Enjoyment:", soilEnjoyment);
 
+    // Ensure stored values are correct
+    waterAmount = parseInt(localStorage.getItem("waterAmount")) || 0;
+    sunAmount = parseInt(localStorage.getItem("sunAmount")) || 0;
+    soilEnjoyment = localStorage.getItem("soilEnjoyment") === "true"; // Convert string to boolean
+    selectedBulb = localStorage.getItem("selectedBulb") || "fluorescent";
+
     let correctBulb = ["fluorescent", "led", "ultraviolet"].includes(selectedBulb);
-    let newGif = "images/Neutral_Bud.gif"; // **Start with Neutral by Default**
+    let growthStage = "Bud"; // Default stage
+    let emotion = "Neutral"; // Default mood
 
-    // **Update Doug's Mood Based on Current Conditions**
-    if (waterAmount === 0 && sunAmount === 0) {
-        newGif = "images/Neutral_Bud.gif"; 
-    } 
-    else if (waterAmount === 0) {
-        newGif = "images/Sad_Bud.gif"; 
-    } 
-    else if (sunAmount === 0) {
-        newGif = "images/Sad_Sprout.gif"; 
-    } 
-    else if (waterAmount < 3 && sunAmount < 3) {
-        newGif = "images/Sad_Bud.gif";
-    } 
-    else if (waterAmount < 3 && sunAmount >= 3) {
-        newGif = "images/Sad_Bud.gif";
-    } 
-    else if (waterAmount >= 3 && sunAmount < 3) {
-        newGif = "images/Sad_Sprout.gif";
-    } 
-    else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
-        newGif = "images/Sad_Bloom.gif";
-    } 
-    else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
-        newGif = "images/Happy_Sprout.gif";
-    } 
-    else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
-        newGif = "images/Happy_Bloom.gif";
+    // 🌱 **Determine Growth Stage**
+    if (waterAmount >= 9 && sunAmount >= 9) {
+        growthStage = "Bloom";
+    } else if (waterAmount >= 6 && sunAmount >= 6) {
+        growthStage = "Sprout";
+    } else {
+        growthStage = "Bud";
     }
 
-    console.log("🖼️ Updating Doug to:", newGif);
+    // 😀 **Determine Emotion**
+    if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
+        emotion = "Happy";
+    } else if (waterAmount >= 3 && sunAmount >= 3 && soilEnjoyment) {
+        emotion = "Neutral";
+    } else {
+        emotion = "Sad";
+    }
 
-    // **Force Update Only if the Image is Different**
+    // 🖼️ **Select GIF File**
+    let newGif = `images/${emotion}_${growthStage}.gif`;
+
+    // 🏗️ **Update Doug’s Image Only if Needed**
     if (dougImage.src !== newGif) {
-        dougImage.src = newGif + "?" + new Date().getTime(); // Force refresh
+        console.log("🖼️ Updating Doug to:", newGif);
+        dougImage.src = newGif + "?" + new Date().getTime(); // Force browser refresh
+    } else {
+        console.log("✅ Doug's state is already correct, no update needed.");
     }
 
-    // **Save Doug's current state**
+    // **Save game state**
     localStorage.setItem("waterAmount", waterAmount);
     localStorage.setItem("sunAmount", sunAmount);
     localStorage.setItem("soilEnjoyment", soilEnjoyment);
 
-    // **Update status message**
+    // **Update Status Message**
     if (messageBox) {
-        let statusMessage = "Doug is ";
-        statusMessage += newGif.includes("Happy") ? "😊 happy! " : newGif.includes("Sad") ? "😢 sad. " : "😐 neutral. ";
+        let statusMessage = `Doug is a ${growthStage} and feeling ${emotion.toLowerCase()}.`;
 
-        if (waterAmount < 3 && waterAmount !== 0) statusMessage += "💧 Needs more water. ";
-        if (sunAmount < 3 && sunAmount !== 0) statusMessage += "☀️ Needs more sunlight. ";
-        if (!soilEnjoyment) statusMessage += "🌱 Doesn't like the soil. ";
+        if (waterAmount < 3) statusMessage += " 💧 Needs more water.";
+        if (sunAmount < 3) statusMessage += " ☀️ Needs more sunlight.";
+        if (!soilEnjoyment) statusMessage += " 🌱 Doesn't like the soil.";
 
         messageBox.innerText = statusMessage;
     }
@@ -501,14 +494,13 @@ function updateDougState() {
 
 // **Trigger Watering**
 function waterDoug() {
-    lastWatered = Date.now();
-    waterAmount += 1;
-    localStorage.setItem("lastWatered", lastWatered);
-    localStorage.setItem("waterAmount", waterAmount);
-    
-    console.log("Doug has been watered! Water amount:", waterAmount);
-    updateDougState(); // Immediately update Doug's state
+    waterAmount = parseInt(localStorage.getItem("waterAmount")) || 0;
+    waterAmount += 1; // Increase water count
+    localStorage.setItem("waterAmount", waterAmount); // Save new value
+    console.log("💧 Doug was watered! New Water Amount:", waterAmount);
+    updateDougState(); // Refresh Doug's condition
 }
+
 
 // **Trigger Soil Check**
 function checkSoil() {
@@ -524,29 +516,22 @@ function checkSoil() {
 // **Change Light Bulb**
 function changeBulb(bulbType) {
     selectedBulb = bulbType;
-
-    // Adjust sunlight based on bulb quality
-    if (bulbType === "ultraviolet") {
-        sunAmount += 5; // Best bulb
-    } else if (bulbType === "led") {
-        sunAmount += 3; // Okay bulb
-    } else if (bulbType === "fluorescent") {
-        sunAmount += 1; // Worst bulb
-    }
-
-    // Save new values
     localStorage.setItem("selectedBulb", selectedBulb);
+
+    // Adjust sunlight based on bulb type
+    sunAmount = parseInt(localStorage.getItem("sunAmount")) || 0;
+    if (bulbType === "ultraviolet") sunAmount += 5; // Best bulb
+    else if (bulbType === "led") sunAmount += 3; // Middle bulb
+    else if (bulbType === "fluorescent") sunAmount += 1; // Worst bulb
+
     localStorage.setItem("sunAmount", sunAmount);
-
-    console.log("💡 Bulb changed to:", bulbType);
-    console.log("☀️ New Sun Amount:", sunAmount);
-
-    updateDougState(); // Update Doug immediately
+    console.log("☀️ Sunlight updated with " + bulbType + ": " + sunAmount);
+    updateDougState();
 }
 
 
 // **Game Loop**
-setInterval(updateDougState, 60 * 1000);
+setInterval(updateDougState, 300000);
 
 // Initialize when document is ready
 document.addEventListener("DOMContentLoaded", function() {
@@ -873,4 +858,7 @@ document.addEventListener("DOMContentLoaded", function () {
             pointsBox.classList.add("show");
         }, 1000);
     }, 1000); // Delay before fade-out starts
+});
+document.addEventListener("DOMContentLoaded", function() {
+    updateDougState();
 });
