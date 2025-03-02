@@ -1,6 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
-
-
 body {
     margin: 0;
     display: flex;
@@ -16,6 +14,12 @@ body {
 
 }
 
+.dangrek-regular {
+    font-family: "Dangrek", serif;
+    font-weight: 400;
+    font-style: normal;
+  }  
+
 .plantBuddy{
     width: 28vmin; 
     height: 28vmin;
@@ -27,8 +31,9 @@ body {
 .desk{
     width: 100vmin; 
     height: 100vmin;
-    border: solid 5px;
-    border-color: rgb(79, 8, 79);
+    border: solid 10px;
+    border-color: rgb(131, 30, 131);
+    border-style: inset;
 }
 
 /* Clickable Shop Areas (Super Close Together) */
@@ -124,7 +129,11 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
-    background: rgb(232, 166, 166);
+    border: solid 10px;
+    border-color: rgb(131, 30, 131);
+    border-style: inset;
+    background: rgb(139, 84, 166);
+    background: linear-gradient(0deg, rgba(139, 84, 166,1) 0%, rgba(255,230,252,1) 35%, rgba(223,255,253,1)100%);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
