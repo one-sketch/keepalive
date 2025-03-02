@@ -27,22 +27,24 @@
   <img id="shopImage" src="" alt="Shop Window">
 </div>
 
+<!-- Clickable Area to Open Task Window -->
 <div class="click-area" onclick="toggleTaskWindow()"></div>
 
+<!-- Task Window -->
 <div class="task-window" id="taskWindow">
-  <h2 class="task_header">Tasks</h2>
-  
-  <!-- Display Current Time -->
-  <p id="clock"></p>
+    <h2 class="task_header">Tasks</h2>
+    
+    <!-- Display Current Time -->
+    <p id="clock"></p>
 
-  <!-- Task List -->
-  <ul class="task_list" id="taskList">
-      <!-- Tasks will be added here dynamically -->
-  </ul>
+    <!-- Task List -->
+    <ul class="task_list" id="taskList">
+        <!-- Tasks will be added here dynamically -->
+    </ul>
 
-  <!-- Input for Adding New Tasks -->
-  <input type="text" id="newTask" placeholder="Enter new task">
-  <button onclick="addTask()">Add Task</button>
+    <!-- Input for Adding New Tasks -->
+    <input type="text" id="newTask" placeholder="Enter new task">
+    <button onclick="addTask()">Add Task</button>
 </div>
 
     <script src="index.js"></script>

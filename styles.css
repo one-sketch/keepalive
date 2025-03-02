@@ -161,3 +161,10 @@ body {
     display: none; /* Hidden initially */
     z-index: 10;
 }
+
+/* Timer Display */
+.timer {
+    font-size: 25px;
+    color: red;
+    margin-left: 10px;
+}
