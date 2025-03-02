@@ -666,21 +666,17 @@ document.addEventListener("DOMContentLoaded", function () {
 // Initial raincloud price
 let rainCloudPrice = parseInt(localStorage.getItem("rainCloudPrice")) || 10;
 
-// Function to update the rain button text
-function updateRainButton() {
-    let rainButton = document.getElementById("summonRainButton");
-    if (rainButton) {
-        rainButton.innerText = `☁️ ${rainCloudPrice} Pts`;
-    }
-}
-
-// Function to summon rain
 function summonRain() {
     if (points >= rainCloudPrice) {
+        console.log(`🌧️ Summoning rain at price: ${rainCloudPrice}`);
+        
         points -= rainCloudPrice; // Deduct points
-        rainCloudPrice += 5; // Increase price for next purchase
+        rainCloudPrice += 5; // Increase price by 5
+
+        // Save values correctly
         localStorage.setItem("points", points);
         localStorage.setItem("rainCloudPrice", rainCloudPrice);
+
         updatePointsDisplay(); // Refresh points UI
         updateRainButton(); // Update button price
 
@@ -705,7 +701,7 @@ function summonRain() {
     }
 }
 
-// Attach event listener for the rain button
+// Ensure button initializes with correct price
 document.addEventListener("DOMContentLoaded", function () {
     let rainButton = document.getElementById("summonRainButton");
     if (rainButton) {
@@ -713,6 +709,14 @@ document.addEventListener("DOMContentLoaded", function () {
         updateRainButton(); // Set initial button price
     }
 });
+
+function updateRainButton() {
+    let rainButton = document.getElementById("summonRainButton");
+    if (rainButton) {
+        rainButton.innerText = `☁️ ${rainCloudPrice} Pts`;
+        console.log(`🔄 Rain Button Updated: ${rainCloudPrice} Pts`);
+    }
+}
 
 
 
