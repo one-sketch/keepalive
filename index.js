@@ -406,68 +406,11 @@ function startCompletionWindow(taskId) {
 
     tasks[taskId].completionInterval = completionInterval;
 }
-// **Doug's Life System (Runs in Background)**
-function updateDougState() {
-    let now = Date.now();
 
-    console.log("🔄 Checking Doug's State...");
-    console.log("💧 Water Amount:", waterAmount);
-    console.log("☀️ Sun Amount:", sunAmount);
-    console.log("🌱 Soil Enjoyment:", soilEnjoyment);
+localStorage.setItem("waterAmount", 0);
+localStorage.setItem("sunAmount", 0);
+updateDougState();
 
-    // Ensure `sunAmount` doesn't reset incorrectly
-    sunAmount = parseInt(localStorage.getItem("sunAmount"));
-    if (isNaN(sunAmount)) sunAmount = 0;
-
-    let correctBulb = ["fluorescent", "led", "ultraviolet"].includes(selectedBulb);
-    let newGif = "images/Happy_Bud.gif"; // Default (Happy Bud)
-
-    // **Sad Bud Condition (Not enough water, but sunlight & soil are okay)**
-    if (waterAmount < 3 && sunAmount >= 3 && soilEnjoyment) {
-        newGif = "images/Sad_Bud.gif";
-    }
-    // **Sad Sprout Condition (Enough water but NOT enough sunlight)**
-    else if (waterAmount >= 3 && sunAmount < 3 && soilEnjoyment) {
-        newGif = "images/Sad_Sprout.gif";
-    }
-    // **Sad Bloom Condition (Water & Sunlight okay, but Bad Soil)**
-    else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
-        newGif = "images/Sad_Bloom.gif";
-    }
-    // **Happy Sprout Condition (Good Water, Sunlight, Soil, and a Bulb)**
-    else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
-        newGif = "images/Happy_Sprout.gif";
-    }
-    // **Happy Bloom Condition (High Water, Sunlight, Soil, and a Bulb)**
-    else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
-        newGif = "images/Happy_Bloom.gif";
-    }
-
-    // **Update only if Doug’s state has changed**
-    if (dougImage.src !== newGif) {
-        console.log("🖼️ Updating Doug to:", newGif);
-        dougImage.src = newGif + "?" + new Date().getTime(); // Force browser refresh
-    } else {
-        console.log("✅ Doug's state is already correct, no update needed.");
-    }
-
-    // **Save game state**
-    localStorage.setItem("waterAmount", waterAmount);
-    localStorage.setItem("sunAmount", sunAmount);
-    localStorage.setItem("soilEnjoyment", soilEnjoyment);
-
-    // **Update status message**
-    if (messageBox) {
-        let statusMessage = "Doug is ";
-        statusMessage += newGif.includes("Happy") ? "😊 happy! " : "😢 sad. ";
-
-        if (waterAmount < 3) statusMessage += "💧 Needs more water. ";
-        if (sunAmount < 3) statusMessage += "☀️ Needs more sunlight. ";
-        if (!soilEnjoyment) statusMessage += "🌱 Doesn't like the soil. ";
-
-        messageBox.innerText = statusMessage;
-    }
-}
 
 
 
@@ -486,71 +429,75 @@ function updateClock() {
 }
 setInterval(updateClock, 1000); // Update clock every second
 
-// **Doug's Life System (Runs in Background)**
 function updateDougState() {
-    let now = Date.now();
+    console.log("🔄 Checking Doug's State...");
 
-    console.log("Checking Doug's State...");
-    console.log("Water Amount:", waterAmount);
-    console.log("Sun Amount:", sunAmount);
-    console.log("Soil Enjoyment:", soilEnjoyment);
+    // Ensure the latest values are loaded
+    waterAmount = parseInt(localStorage.getItem("waterAmount")) || 0;
+    sunAmount = parseInt(localStorage.getItem("sunAmount")) || 0;
+    soilEnjoyment = localStorage.getItem("soilEnjoyment") === "true"; // Convert string to boolean
 
-    let correctBulb = (selectedBulb === "fluorescent" || selectedBulb === "led" || selectedBulb === "ultraviolet");
-    let newGif = "images/Happy_Bud.gif"; // Default (Happy Bud)
+    console.log("💧 Water Amount:", waterAmount);
+    console.log("☀️ Sun Amount:", sunAmount);
+    console.log("🌱 Soil Enjoyment:", soilEnjoyment);
 
-    // **Sad Bud Condition (Water < 3, Sunlight ≥ 3, Soil Good)**
-    if (waterAmount < 3 && sunAmount >= 3 && soilEnjoyment) {
+    let correctBulb = ["fluorescent", "led", "ultraviolet"].includes(selectedBulb);
+    let newGif = "images/Neutral_Bud.gif"; // **Start with Neutral by Default**
+
+    // **Update Doug's Mood Based on Current Conditions**
+    if (waterAmount === 0 && sunAmount === 0) {
+        newGif = "images/Neutral_Bud.gif"; 
+    } 
+    else if (waterAmount === 0) {
+        newGif = "images/Sad_Bud.gif"; 
+    } 
+    else if (sunAmount === 0) {
+        newGif = "images/Sad_Sprout.gif"; 
+    } 
+    else if (waterAmount < 3 && sunAmount < 3) {
         newGif = "images/Sad_Bud.gif";
-    }
-    // **Sad Sprout Condition (Water ≥ 3 but Sun < 3)**
-    else if (waterAmount >= 3 && sunAmount < 3 && soilEnjoyment) {
+    } 
+    else if (waterAmount < 3 && sunAmount >= 3) {
+        newGif = "images/Sad_Bud.gif";
+    } 
+    else if (waterAmount >= 3 && sunAmount < 3) {
         newGif = "images/Sad_Sprout.gif";
-    }
-    // **Sad Bloom Condition (Water & Sunlight okay, but Bad Soil)**
+    } 
     else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
         newGif = "images/Sad_Bloom.gif";
-    }
-    // **Happy Sprout Condition**
+    } 
     else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
         newGif = "images/Happy_Sprout.gif";
-    }
-    // **Happy Bloom Condition**
+    } 
     else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
         newGif = "images/Happy_Bloom.gif";
     }
 
-    console.log("Updating Doug to:", newGif);
-    if (dougImage) {
-        dougImage.src = newGif + "?" + new Date().getTime();
+    console.log("🖼️ Updating Doug to:", newGif);
+
+    // **Force Update Only if the Image is Different**
+    if (dougImage.src !== newGif) {
+        dougImage.src = newGif + "?" + new Date().getTime(); // Force refresh
     }
-    
-    // Save game state - This was outside the function in the original code
+
+    // **Save Doug's current state**
     localStorage.setItem("waterAmount", waterAmount);
     localStorage.setItem("sunAmount", sunAmount);
     localStorage.setItem("soilEnjoyment", soilEnjoyment);
-    
-    // Update status message if available
+
+    // **Update status message**
     if (messageBox) {
         let statusMessage = "Doug is ";
-        if (newGif.includes("Happy")) {
-            statusMessage += "happy! ";
-        } else {
-            statusMessage += "sad. ";
-        }
-        
-        if (waterAmount < 3) {
-            statusMessage += "Doug needs more water. ";
-        }
-        if (sunAmount < 3) {
-            statusMessage += "Doug needs more sunlight. ";
-        }
-        if (!soilEnjoyment) {
-            statusMessage += "Doug doesn't like the soil. ";
-        }
-        
+        statusMessage += newGif.includes("Happy") ? "😊 happy! " : newGif.includes("Sad") ? "😢 sad. " : "😐 neutral. ";
+
+        if (waterAmount < 3 && waterAmount !== 0) statusMessage += "💧 Needs more water. ";
+        if (sunAmount < 3 && sunAmount !== 0) statusMessage += "☀️ Needs more sunlight. ";
+        if (!soilEnjoyment) statusMessage += "🌱 Doesn't like the soil. ";
+
         messageBox.innerText = statusMessage;
     }
 }
+
 
 // **Trigger Watering**
 function waterDoug() {
