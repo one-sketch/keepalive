@@ -23,6 +23,23 @@ const messageBox = document.getElementById("statusMessage");
 // Points tracking
 let points = parseInt(localStorage.getItem("points")) || 0;
 
+// Function to update points display
+function updatePointsDisplay() {
+    let pointsElement = document.getElementById("pointsDisplay");
+    if (pointsElement) {
+        pointsElement.innerText = points;
+    } else {
+        console.error("Points display element not found in the DOM!");
+    }
+}
+
+// Ensure points are loaded on page load
+document.addEventListener("DOMContentLoaded", updatePointsDisplay);
+
+// Ensure points are loaded on page load
+document.addEventListener("DOMContentLoaded", updatePointsDisplay);
+
+
 // **Start Game**
 function startGame() {
     window.location.href = 'game.html'; 
@@ -118,6 +135,42 @@ function addTask() {
     
     // Save tasks to localStorage
     saveTasksToStorage();
+}
+function deleteTask(taskId) {
+    if (!tasks[taskId]) {
+        console.error(`Task ${taskId} not found for deletion!`);
+        return;
+    }
+
+    // Find the task checkbox and parent <li> element
+    let taskCheckbox = document.getElementById(taskId);
+    if (!taskCheckbox) {
+        console.error(`Task checkbox ${taskId} not found for deletion!`);
+        return;
+    }
+    
+    let taskElement = taskCheckbox.closest("li");
+    if (taskElement) {
+        taskElement.remove(); // Remove from UI
+    } else {
+        console.error(`Task element for ${taskId} not found for deletion!`);
+    }
+
+    // Stop the main task timer if it exists
+    if (tasks[taskId].timerInterval) {
+        clearInterval(tasks[taskId].timerInterval);
+    }
+
+    // Stop the completion timer if it exists
+    if (tasks[taskId].completionInterval) {
+        clearInterval(tasks[taskId].completionInterval);
+    }
+
+    // Remove task from tracking and localStorage
+    delete tasks[taskId];
+    saveTasksToStorage(); // Update localStorage with new task list
+
+    console.log(`Task ${taskId} deleted successfully.`);
 }
 
 // Save tasks to localStorage
@@ -266,103 +319,72 @@ function startCompletionWindow(taskId) {
 
     tasks[taskId].completionInterval = completionInterval;
 }
-
-// Complete Task & Award Points
 function completeTask(taskId) {
     let checkBox = document.getElementById(taskId);
     if (!checkBox) {
         console.error(`Checkbox for task ${taskId} not found!`);
         return;
     }
-    
-    // Only proceed if checkbox is checked and task exists and isn't already completed
-    if (!checkBox.checked || !tasks[taskId] || tasks[taskId].completed) {
+
+    // Check if task exists and isn't already completed
+    if (!tasks[taskId] || tasks[taskId].completed) {
+        console.log(`Task ${taskId} is already completed or not found.`);
         return;
     }
-    
-    // Task is being completed
-    console.log(`Completing task ${taskId}`);
-    
+
     // Stop the main task timer if it's still running
     if (tasks[taskId].timerInterval) {
         clearInterval(tasks[taskId].timerInterval);
         tasks[taskId].timerInterval = null;
     }
-    
-    // Determine if task is completed within time window
-    let now = Date.now();
-    let isWithinTime = false;
-    
-    // If completionStartTime exists, use that to check 30-minute window
-    if (tasks[taskId].completionStartTime) {
-        let timeElapsed = now - tasks[taskId].completionStartTime;
-        isWithinTime = timeElapsed <= (30 * 60 * 1000); // 30 minutes in ms
-    } else {
-        // If no completion window started yet, check if within original task duration
-        let timeElapsed = now - tasks[taskId].startTime;
-        isWithinTime = timeElapsed <= (tasks[taskId].duration * 1000);
-    }
-    
-    // Award points if completed in time
-    if (isWithinTime) {
-        points += 10;
-        alert(`Task completed on time! +10 points. Total: ${points}`);
-    } else {
-        alert("Time expired! No points awarded.");
-    }
-    
-    // Mark task as completed
-    tasks[taskId].completed = true;
-    
-    // Clear completion interval if it exists
+
+    // Stop the completion timer if it's still running
     if (tasks[taskId].completionInterval) {
         clearInterval(tasks[taskId].completionInterval);
         tasks[taskId].completionInterval = null;
     }
-    
-    // Update UI
+
+    // Determine if task is completed within time window
+    let now = Date.now();
+    let isWithinTime = false;
+
+    if (tasks[taskId].completionStartTime) {
+        let timeElapsed = now - tasks[taskId].completionStartTime;
+        isWithinTime = timeElapsed <= (30 * 60 * 1000); // 30 minutes in ms
+    } else {
+        let timeElapsed = now - tasks[taskId].startTime;
+        isWithinTime = timeElapsed <= (tasks[taskId].duration * 1000);
+    }
+
+    // Award points if completed in time
+    if (isWithinTime) {
+        points += 10;
+        alert(`✅ Task completed on time! +10 points. Total: ${points}`);
+    } else {
+        alert("⏳ Time expired! No points awarded.");
+    }
+
+    // Mark task as completed
+    tasks[taskId].completed = true;
+
+    // Update UI to show completed status
     let timerDisplay = document.getElementById(`timer-${taskId}`);
     if (timerDisplay) {
-        timerDisplay.innerText = "COMPLETED";
+        timerDisplay.innerText = "✅ COMPLETED";
+        timerDisplay.style.color = "green"; // Make it clear
     }
-    
+
+    // Disable the checkbox so users can't uncheck it
+    checkBox.disabled = true;
+
     // Save updated points and tasks
+    localStorage.setItem("points", points);
     saveTasksToStorage();
+
+    // **Automatically Refresh the Points Window**
+    updatePointsDisplay();
 }
 
-// Delete Task
-function deleteTask(taskId) {
-    if (!tasks[taskId]) {
-        console.error(`Task ${taskId} not found for deletion!`);
-        return;
-    }
-    
-    // Find the task element in the DOM
-    let taskCheckbox = document.getElementById(taskId);
-    if (!taskCheckbox) {
-        console.error(`Task checkbox ${taskId} not found for deletion!`);
-        return;
-    }
-    
-    // Find the parent li element and remove it
-    let taskElement = taskCheckbox.closest('li');
-    if (taskElement) {
-        taskElement.remove();
-    } else {
-        console.error(`Task element for ${taskId} not found for deletion!`);
-    }
-    
-    // Clear intervals if they exist
-    if (tasks[taskId].timerInterval) {
-        clearInterval(tasks[taskId].timerInterval);
-    }
-    if (tasks[taskId].completionInterval) {
-        clearInterval(tasks[taskId].completionInterval);
-    }
-    
-    delete tasks[taskId]; // Remove from tracking
-    saveTasksToStorage(); // Update storage
-}
 
 // **24-Hour Clock**
 function updateClock() {
@@ -510,4 +532,9 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("- Soil:", soilEnjoyment ? "Good" : "Bad");
     console.log("- Bulb:", selectedBulb);
     console.log("- Points:", points);
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    updatePointsDisplay(); // Load points when the page loads
 });
