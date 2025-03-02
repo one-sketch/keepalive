@@ -678,7 +678,7 @@ function updateRainButton() {
 function summonRain() {
     if (points >= rainCloudPrice) {
         points -= rainCloudPrice; // Deduct points
-        rainCloudPrice += 10; // Increase price for next purchase
+        rainCloudPrice += 5; // Increase price for next purchase
         localStorage.setItem("points", points);
         localStorage.setItem("rainCloudPrice", rainCloudPrice);
         updatePointsDisplay(); // Refresh points UI
