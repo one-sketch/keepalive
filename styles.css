@@ -125,31 +125,6 @@ body {
     background: rgba(255, 0, 0, 0); /* Temporary red overlay for debugging */
 }
 
-/* Task Window (Initially Hidden) */
-.task-window {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    border: solid 10px;
-    border-color: rgb(131, 30, 131);
-    border-style: inset;
-    background: rgb(139, 84, 166);
-    background: linear-gradient(0deg, rgba(139, 84, 166,1) 0%, rgba(255,230,252,1) 35%, rgba(223,255,253,1)100%);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: none; /* Hidden initially */
-    z-index: 10;
-}
-
-/* Timer Display */
-.timer {
-    font-size: 25px;
-    color: rgb(141, 24, 24);
-    margin-left: 10px;
-}
 
 
 /* LED Light Image */
@@ -210,6 +185,7 @@ body {
     font-size: 16px;
     font-weight: bold;
     margin-left: 10px;
+    color: rgb(141, 24, 24);
 }
 
 button {

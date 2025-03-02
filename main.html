@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desk Image</title>
     <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <img id="dougImage" src = "images/Neutral_Bud.gif" alt = "Plant Buddy" class = "plantBuddy">
+</head>
+<body>
+
+    <!-- Doug Image -->
+    <img id="dougImage" src="images/Neutral_Bud.gif" alt="Plant Buddy" class="plantBuddy">
+    
+    <!-- Desk Background -->
     <img src="images/desk.png" alt="Desk Background" class="desk">
+
+    <!-- Clickable Areas to Open Shop Windows -->
+    <div class="click-shop shop1" onclick="openShopWindow('lightbulbs.png')"></div>
+    <div class="click-shop shop2" onclick="openShopWindow('summon-cloud.png')"></div>
+    <div class="click-shop shop3" onclick="openShopWindow('pot_shop.png')"></div>
+    <div class="click-shop shop4" onclick="openShopWindow('dirt-shop.png')"></div>
+
+    <!-- Shop Window (Initially Hidden) -->
+    <div class="shop-window" id="shopWindow">
+        <span class="close-btn" onclick="closeShopWindow()">&times;</span>
+        <img id="shopImage" src="" alt="Shop Window">
+    </div>
+
+    <!-- Clickable Area to Open Task Window -->
     <div class="click-area" onclick="toggleTaskWindow()"></div>
-  </div>
 
-<!-- Clickable Areas to Open Shop Windows -->
-<div class="click-shop shop1" onclick="openShopWindow('lightbulbs.png')"></div>
-<div class="click-shop shop2" onclick="openShopWindow('summon-cloud.png')"></div>
-<div class="click-shop shop3" onclick="openShopWindow('pot_shop.png')"></div>
-<div class="click-shop shop4" onclick="openShopWindow('dirt-shop.png')"></div>
+    <!-- Task Window (Initially Hidden) -->
+    <div class="task-window" id="taskWindow">
+        <h2 class="task_header">Tasks</h2>
 
-<!-- Shop Window (Initially Hidden) -->
-<div class="shop-window" id="shopWindow">
-  <span class="close-btn" onclick="closeShopWindow()">&times;</span>
-  <img id="shopImage" src="" alt="Shop Window">
-</div>
+        <!-- Display Current Time -->
+        <p id="clock"></p>
 
+        <!-- Task List -->
+        <ul class="task_list" id="taskList">
+            <!-- Tasks will be added dynamically -->
+        </ul>
 
-<!-- Clickable Area to Open Task Window -->
-<div class="click-area" onclick="toggleTaskWindow()"></div>
+        <!-- Input for Adding New Tasks -->
+        <input type="text" id="newTask" placeholder="Enter new task">
+        <input type="number" id="taskDuration" placeholder="Duration (minutes)" min="1">
+        <button onclick="addTask()">Add Task</button>
+    </div>
 
-<!-- Task Window -->
-<div class="task-window" id="taskWindow">
-  <h2 class="task_header">Tasks</h2>
-
-  <!-- Display Current Time -->
-  <p id="clock"></p>
-
-  <!-- Task List -->
-  <ul class="task_list" id="taskList">
-      <!-- Tasks will be added dynamically -->
-  </ul>
-
-  <!-- Input for Adding New Tasks -->
-  <input type="text" id="newTask" placeholder="Enter new task">
-  <input type="number" id="taskDuration" placeholder="Duration (minutes)" min="1">
-  <button onclick="addTask()">Add Task</button>
-</div>
-
-
-
-
-
-
-
-
+    <!-- JavaScript File -->
     <script src="index.js"></script>
-  </body>
+
+</body>
 </html>
