@@ -6,3 +6,19 @@ function toggleTaskWindow() {
     let taskWindow = document.getElementById("taskWindow");
     taskWindow.style.display = (taskWindow.style.display === "block") ? "none" : "block";
 }
+
+function openShop(imageSrc) {
+    let shopWindow = document.getElementById("shopWindow");
+    let shopImage = document.getElementById("shopImage");
+
+    // Debugging: Check image path
+    console.log("Loading image:", "images/" + imageSrc);
+
+    // Set the shop image source
+    shopImage.src = "images/" + imageSrc;
+    shopWindow.style.display = "block"; // Show the shop window
+}
+
+function closeShop() {
+    document.getElementById("shopWindow").style.display = "none";
+}

@@ -13,6 +13,14 @@ body {
 
 }
 
+.plantBuddy{
+    width: 28vmin; 
+    height: 28vmin;
+    position: absolute;
+    left: 44%;
+    top: 42%;
+}
+
 .desk{
     width: 100vmin; 
     height: 100vmin;
@@ -20,7 +28,80 @@ body {
     border-color: rgb(79, 8, 79);
 }
 
+.plantshop{
 
+        position: absolute;
+        left: 60%; /* Center horizontally */
+        top: 50%; /* Center vertically */
+        transform: translate(-65%, -640%); /* Adjust for exact centering */
+        background-color: rgba(255, 255, 255, 0); /* Optional: Adjust background */
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size: 50px;
+        color: rgb(10, 83, 22);
+        text-align: center;
+        border-radius: 5px; /* Optional: Rounded corners */
+
+    
+}
+
+/* Button container to place buttons under icons */
+.button-container {
+    position: absolute;
+    bottom: 65%; /* Adjust based on the image */
+    width:50%;
+    right: 10%;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+/* Individual button positioning */
+.shop-button {
+    position: absolute;
+    bottom: 20px; /* Adjust distance from the icons */
+    transform: translateX(-50%);
+    padding: 10px 15px;
+    border: none;
+    background-color: #6a4f4b;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.shop-button:hover {
+    background-color: #573d3a;
+}
+
+/* Shop Window Popup */
+.shop-window {
+    display: none; /* Hidden initially */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 10;
+    width: 400px;
+    text-align: center;
+}
+
+.shop-window img {
+    width: 100%;
+    max-width: 380px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
 
 .start-container {
     text-align: center;

@@ -7,9 +7,22 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <img src = "images/Neutral_Bud.gif" alt = "Plant Buddy" class = "plantBuddy">
     <img src="images/desk.png" alt="Desk Background" class="desk">
     <div class="click-area" onclick="toggleTaskWindow()"></div>
   </div>
+
+<h2 class="plantshop">Plant Care</h2>
+<div class="button-container">
+  <button class="shop-button" onclick="openShop('lightbulbs.png.png')" style="left: 1%;">Open</button>
+  <button class="shop-button" onclick="openShop('summon-cloud.png.png')" style="left: 22%;">Open</button>
+  <button class="shop-button" onclick="openShop('shop3.png')" style="left: 44%;">Open</button>
+  <button class="shop-button" onclick="openShop('dirt-shop.png')" style="left: 66%;">Open</button>
+</div>
+
+<div id="shopWindow" class="shop-window">
+  <span class="close-btn" onclick="closeShop()">&times;</span>
+  <img id="shopImage" src="" alt="Shop Window">
 
   <div class="task-window" id="taskWindow">
     <h2 class="task_header">Tasks</h2>
