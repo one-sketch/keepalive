@@ -154,7 +154,7 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
-    background: white;
+    background: rgb(232, 166, 166);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -165,6 +165,6 @@ body {
 /* Timer Display */
 .timer {
     font-size: 25px;
-    color: red;
+    color: rgb(141, 24, 24);
     margin-left: 10px;
 }
