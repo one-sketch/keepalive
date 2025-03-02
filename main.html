@@ -13,25 +13,25 @@
   </div>
 
 <h2 class="plantshop">Plant Care</h2>
+
 <div class="button-container">
   <button class="shop-button" onclick="openShop('lightbulbs.png.png')" style="left: 1%;">Open</button>
   <button class="shop-button" onclick="openShop('summon-cloud.png.png')" style="left: 22%;">Open</button>
-  <button class="shop-button" onclick="openShop('shop3.png')" style="left: 44%;">Open</button>
+  <button class="shop-button" onclick="openShop('pot_shop.png')" style="left: 44%;">Open</button>
   <button class="shop-button" onclick="openShop('dirt-shop.png')" style="left: 66%;">Open</button>
 </div>
 
-<div id="shopWindow" class="shop-window">
-  <span class="close-btn" onclick="closeShop()">&times;</span>
-  <img id="shopImage" src="" alt="Shop Window">
+<div class="click-area" onclick="toggleTaskWindow()"></div>
 
-  <div class="task-window" id="taskWindow">
-    <h2 class="task_header">Tasks</h2>
-    <ul class="task_list">
-        <li class="a_task">Task 1 <input type="checkbox"></li>
-        <li class="a_task">Task 2 <input type="checkbox"></li>
-        <li class="a_task">Task 3 <input type="checkbox"></li>
-    </ul>
+<div class="task-window" id="taskWindow">
+  <h2 class="task_header">Tasks</h2>
+  <ul class="task_list">
+      <li class="a_task">Task 1 <input type="checkbox"></li>
+      <li class="a_task">Task 2 <input type="checkbox"></li>
+      <li class="a_task">Task 3 <input type="checkbox"></li>
+  </ul>
 </div>
+
     <script src="index.js"></script>
   </body>
 </html>

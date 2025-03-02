@@ -4,6 +4,9 @@ function startGame() {
 
 function toggleTaskWindow() {
     let taskWindow = document.getElementById("taskWindow");
+
+    console.log("Book clicked. Toggling Task Window.");
+
     taskWindow.style.display = (taskWindow.style.display === "block") ? "none" : "block";
 }
 
