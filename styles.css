@@ -24,8 +24,8 @@ body {
     width: 28vmin; 
     height: 28vmin;
     position: absolute;
-    left: 44%;
-    top: 42%;
+    left: 45%;
+    top: 39%;
 }
 
 .desk{
@@ -36,47 +36,51 @@ body {
     border-style: inset;
 }
 
-
-
-/* Clickable Shop Areas */
-.shop-area {
+/* Clickable Shop Areas (Super Close Together) */
+.click-shop {
     position: absolute;
-    top: 60px; /* Adjust as needed */
-    width: 80px; /* Size matching shop buttons */
-    height: 80px; /* Adjust to fit shop icons */
+    width: 87px;  /* Slightly smaller width */
+    height: 40px; /* Reduced height */
     cursor: pointer;
-    opacity: 0; /* Hide clickable area */
+    background-color: rgba(255, 0, 0, 0); /* Temporary red for testing */
+    z-index: 5; /* Ensure it's above other elements */
 }
 
-/* Positioning for each shop */
-.shop1 { left: 10%; } /* First shop */
-.shop2 { left: 35%; } /* Second shop */
-.shop3 { left: 60%; } /* Third shop */
-.shop4 { left: 85%; } /* Fourth shop */
+/* Position Each Clickable Shop (Super Close Together) */
+.shop1 { top: 27%; left: 39%; }  /* Move right */
+.shop2 { top: 27%; left: 49%; }  /* Slightly closer */
+.shop3 { top: 27%; left: 59%; }  /* Move closer */
+.shop4 { top: 27%; left: 69%; }  /* Tighter spacing */
 
-/* Shop Window */
+
+/* Shop Window (Smaller Size) */
 .shop-window {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
+    background: rgb(111, 55, 55);
+    padding: 15px; /* Reduced padding */
+    width: 500px; /* Set a fixed width */
+    height: 500px; /* Set a fixed height */
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     display: none;
     z-index: 10;
 }
 
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
+/* Resize the Shop Image Inside */
+.shop-window img {
+    width: 100%; /* Ensures image fits within window */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 90%; /* Prevents overflow */
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 3de5fffab86abb7a285a44739d6f964cc5414eed
 .close-btn {
     position: absolute;
     top: 5px;
@@ -113,9 +117,9 @@ body {
 /* Invisible Clickable Area Over Notebook */
 .click-area {
     position: absolute;
-    left: 40%; /* Adjust this value based on the notebook's position */
+    left: 39%; /* Adjust this value based on the notebook's position */
     top: 85%; /* Adjust this value based on where the notebook starts */
-    width: 20%; /* Adjust the size to match the notebook */
+    width: 25%; /* Adjust the size to match the notebook */
     height: 15%; /* Adjust to match the notebook height */
     cursor: pointer;
     background: rgba(255, 0, 0, 0); /* Temporary red overlay for debugging */

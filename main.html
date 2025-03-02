@@ -13,19 +13,16 @@
   </div>
 
 <!-- Clickable Areas to Open Shop Windows -->
-<div class="shop-area shop1" onclick="openShopWindow('lightbulbs.png')"></div>
-<div class="shop-area shop2" onclick="openShopWindow('summon-cloud.png')"></div>
-<div class="shop-area shop3" onclick="openShopWindow('pot_shop.png')"></div>
-<div class="shop-area shop4" onclick="openShopWindow('dirt-shop.png')"></div>
+<div class="click-shop shop1" onclick="openShopWindow('lightbulbs.png')"></div>
+<div class="click-shop shop2" onclick="openShopWindow('summon-cloud.png')"></div>
+<div class="click-shop shop3" onclick="openShopWindow('pot_shop.png')"></div>
+<div class="click-shop shop4" onclick="openShopWindow('dirt-shop.png')"></div>
 
-<!-- Shop Window -->
+<!-- Shop Window (Initially Hidden) -->
 <div class="shop-window" id="shopWindow">
-    <span class="close-btn" onclick="closeShopWindow()">&times;</span>
-    <img id="shopImage" src="" alt="Shop Window">
+  <span class="close-btn" onclick="closeShopWindow()">&times;</span>
+  <img id="shopImage" src="" alt="Shop Window">
 </div>
-
-
-
 
 
 <!-- Clickable Area to Open Task Window -->

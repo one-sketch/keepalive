@@ -206,15 +206,14 @@ function changeBulb(bulbType) {
 // **Game Loop**
 setInterval(updateDougState, 60 * 1000);
 
-
 function openShopWindow(imageSrc) {
     let shopWindow = document.getElementById("shopWindow");
     let shopImage = document.getElementById("shopImage");
 
-    console.log("Opening Shop:", "images/" + imageSrc);
+    console.log("Opening Shop:", "images/" + imageSrc); // Debugging Log
 
     if (shopImage && shopWindow) {
-        shopImage.src = "images/" + imageSrc;
+        shopImage.src = "images/" + imageSrc + "?" + new Date().getTime(); // Force image refresh
         shopWindow.style.display = "block"; // Show the shop window
     } else {
         console.error("Shop window or image not found!");
