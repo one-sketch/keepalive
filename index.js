@@ -91,7 +91,7 @@ function addTask() {
     let duration = parseInt(durationInput.value, 10);
 
     if (taskText === "" || isNaN(duration) || duration <= 0) {
-        alert("Please enter a valid task and duration!");
+        showPopup("Please enter a valid task and duration!");
         return;
     }
 
@@ -319,71 +319,69 @@ function startCompletionWindow(taskId) {
 
     tasks[taskId].completionInterval = completionInterval;
 }
-function completeTask(taskId) {
-    let checkBox = document.getElementById(taskId);
-    if (!checkBox) {
-        console.error(`Checkbox for task ${taskId} not found!`);
-        return;
-    }
-
-    // Check if task exists and isn't already completed
-    if (!tasks[taskId] || tasks[taskId].completed) {
-        console.log(`Task ${taskId} is already completed or not found.`);
-        return;
-    }
-
-    // Stop the main task timer if it's still running
-    if (tasks[taskId].timerInterval) {
-        clearInterval(tasks[taskId].timerInterval);
-        tasks[taskId].timerInterval = null;
-    }
-
-    // Stop the completion timer if it's still running
-    if (tasks[taskId].completionInterval) {
-        clearInterval(tasks[taskId].completionInterval);
-        tasks[taskId].completionInterval = null;
-    }
-
-    // Determine if task is completed within time window
+// **Doug's Life System (Runs in Background)**
+function updateDougState() {
     let now = Date.now();
-    let isWithinTime = false;
 
-    if (tasks[taskId].completionStartTime) {
-        let timeElapsed = now - tasks[taskId].completionStartTime;
-        isWithinTime = timeElapsed <= (30 * 60 * 1000); // 30 minutes in ms
+    console.log("🔄 Checking Doug's State...");
+    console.log("💧 Water Amount:", waterAmount);
+    console.log("☀️ Sun Amount:", sunAmount);
+    console.log("🌱 Soil Enjoyment:", soilEnjoyment);
+
+    // Ensure `sunAmount` doesn't reset incorrectly
+    sunAmount = parseInt(localStorage.getItem("sunAmount"));
+    if (isNaN(sunAmount)) sunAmount = 0;
+
+    let correctBulb = ["fluorescent", "led", "ultraviolet"].includes(selectedBulb);
+    let newGif = "images/Happy_Bud.gif"; // Default (Happy Bud)
+
+    // **Sad Bud Condition (Not enough water, but sunlight & soil are okay)**
+    if (waterAmount < 3 && sunAmount >= 3 && soilEnjoyment) {
+        newGif = "images/Sad_Bud.gif";
+    }
+    // **Sad Sprout Condition (Enough water but NOT enough sunlight)**
+    else if (waterAmount >= 3 && sunAmount < 3 && soilEnjoyment) {
+        newGif = "images/Sad_Sprout.gif";
+    }
+    // **Sad Bloom Condition (Water & Sunlight okay, but Bad Soil)**
+    else if (waterAmount >= 3 && sunAmount >= 3 && !soilEnjoyment) {
+        newGif = "images/Sad_Bloom.gif";
+    }
+    // **Happy Sprout Condition (Good Water, Sunlight, Soil, and a Bulb)**
+    else if (waterAmount >= 6 && sunAmount >= 6 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Sprout.gif";
+    }
+    // **Happy Bloom Condition (High Water, Sunlight, Soil, and a Bulb)**
+    else if (waterAmount >= 9 && sunAmount >= 9 && soilEnjoyment && correctBulb) {
+        newGif = "images/Happy_Bloom.gif";
+    }
+
+    // **Update only if Doug’s state has changed**
+    if (dougImage.src !== newGif) {
+        console.log("🖼️ Updating Doug to:", newGif);
+        dougImage.src = newGif + "?" + new Date().getTime(); // Force browser refresh
     } else {
-        let timeElapsed = now - tasks[taskId].startTime;
-        isWithinTime = timeElapsed <= (tasks[taskId].duration * 1000);
+        console.log("✅ Doug's state is already correct, no update needed.");
     }
 
-    // Award points if completed in time
-    if (isWithinTime) {
-        points += 10;
-        alert(`✅ Task completed on time! +10 points. Total: ${points}`);
-    } else {
-        alert("⏳ Time expired! No points awarded.");
+    // **Save game state**
+    localStorage.setItem("waterAmount", waterAmount);
+    localStorage.setItem("sunAmount", sunAmount);
+    localStorage.setItem("soilEnjoyment", soilEnjoyment);
+
+    // **Update status message**
+    if (messageBox) {
+        let statusMessage = "Doug is ";
+        statusMessage += newGif.includes("Happy") ? "😊 happy! " : "😢 sad. ";
+
+        if (waterAmount < 3) statusMessage += "💧 Needs more water. ";
+        if (sunAmount < 3) statusMessage += "☀️ Needs more sunlight. ";
+        if (!soilEnjoyment) statusMessage += "🌱 Doesn't like the soil. ";
+
+        messageBox.innerText = statusMessage;
     }
-
-    // Mark task as completed
-    tasks[taskId].completed = true;
-
-    // Update UI to show completed status
-    let timerDisplay = document.getElementById(`timer-${taskId}`);
-    if (timerDisplay) {
-        timerDisplay.innerText = "✅ COMPLETED";
-        timerDisplay.style.color = "green"; // Make it clear
-    }
-
-    // Disable the checkbox so users can't uncheck it
-    checkBox.disabled = true;
-
-    // Save updated points and tasks
-    localStorage.setItem("points", points);
-    saveTasksToStorage();
-
-    // **Automatically Refresh the Points Window**
-    updatePointsDisplay();
 }
+
 
 
 // **24-Hour Clock**
@@ -492,13 +490,26 @@ function checkSoil() {
 // **Change Light Bulb**
 function changeBulb(bulbType) {
     selectedBulb = bulbType;
-    sunAmount += 1;
+
+    // Adjust sunlight based on bulb quality
+    if (bulbType === "ultraviolet") {
+        sunAmount += 5; // Best bulb
+    } else if (bulbType === "led") {
+        sunAmount += 3; // Okay bulb
+    } else if (bulbType === "fluorescent") {
+        sunAmount += 1; // Worst bulb
+    }
+
+    // Save new values
     localStorage.setItem("selectedBulb", selectedBulb);
     localStorage.setItem("sunAmount", sunAmount);
-    
-    console.log("Bulb changed to:", bulbType, "Sun amount:", sunAmount);
-    updateDougState(); // Immediately update Doug's state
+
+    console.log("💡 Bulb changed to:", bulbType);
+    console.log("☀️ New Sun Amount:", sunAmount);
+
+    updateDougState(); // Update Doug immediately
 }
+
 
 // **Game Loop**
 setInterval(updateDougState, 60 * 1000);
@@ -586,9 +597,9 @@ function purchaseBulb(bulbType, price) {
             bulbImage.style.display = "block"; // Show the new bulb
         }
 
-        alert(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
+        showPopup(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
     } else {
-        alert("❌ Not enough points!");
+        showPopup("❌ Not enough points!");
     }
 }
 
@@ -608,8 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-// Initial price for the raincloud
+// Initial raincloud price
 let rainCloudPrice = parseInt(localStorage.getItem("rainCloudPrice")) || 10;
 
 // Function to update the rain button text
@@ -620,25 +630,34 @@ function updateRainButton() {
     }
 }
 
-// Function to purchase a raincloud and display it
+// Function to summon rain
 function summonRain() {
     if (points >= rainCloudPrice) {
         points -= rainCloudPrice; // Deduct points
         rainCloudPrice += 10; // Increase price for next purchase
         localStorage.setItem("points", points);
         localStorage.setItem("rainCloudPrice", rainCloudPrice);
-        updatePointsDisplay(); // Update points UI
+        updatePointsDisplay(); // Refresh points UI
         updateRainButton(); // Update button price
 
         let cloudImage = document.getElementById("rainCloud");
         if (cloudImage) {
-            cloudImage.src = "images/cloud.gif"; // Set to the new rain GIF
+            cloudImage.src = "images/cloud.gif"; // Use the cloud GIF
             cloudImage.style.display = "block"; // Show the cloud
+            cloudImage.style.animation = "cloudMove 10s linear forwards"; // Apply animation
         }
 
-        alert(`🌧️ Raincloud summoned! New price: ${rainCloudPrice} points.`);
+        // Hide the cloud after 10 seconds
+        setTimeout(() => {
+            if (cloudImage) {
+                cloudImage.style.display = "none"; // Hide cloud
+                cloudImage.style.animation = ""; // Reset animation
+            }
+        }, 10000);
+
+        showPopup(`🌧️ Raincloud summoned! New price: ${rainCloudPrice} points.`);
     } else {
-        alert("❌ Not enough points!");
+        showPopup("❌ Not enough points!");
     }
 }
 
@@ -678,10 +697,10 @@ function buyPot(potType) {
         points -= cost;
         localStorage.setItem("points", points);
 
-        alert(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        showPopup(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
         updatePointsDisplay();
     } else {
-        alert(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
     }
 }
 
@@ -693,10 +712,10 @@ function buyDirt(dirtType) {
         points -= cost;
         localStorage.setItem("points", points);
 
-        alert(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        showPopup(`🌱 You bought ${dirtType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
         updatePointsDisplay();
     } else {
-        alert(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup(`❌ Not enough points! ${dirtType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
     }
 }
 
@@ -709,3 +728,17 @@ function updatePointsDisplay() {
     }
 }
 
+
+// Function to Show a Nice Pop-Up Message
+function showPopup(message) {
+    let popup = document.createElement("div");
+    popup.classList.add("popup-message");
+    popup.innerText = message;
+
+    document.body.appendChild(popup);
+
+    // Auto-remove pop-up after 3 seconds
+    setTimeout(() => {
+        popup.remove();
+    }, 3000);
+}

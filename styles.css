@@ -390,3 +390,49 @@ button:hover {
     display: none; /* Hidden by default */
     z-index: 5; /* Ensure it's visible but not above UI elements */
 }
+
+/* Rain Cloud Animation (Moves Left to Right & Disappears After 10 Seconds) */
+.rain-cloud {
+    position: absolute;
+    top: 20%; /* Adjust to float above Doug */
+    left: 20%; /* Start position */
+    width: 200px; /* Adjust size */
+    height: auto;
+    display: none; /* Hidden by default */
+    z-index: 10; /* Ensure it appears above Doug */
+    opacity: 0.9; /* Slight transparency for realism */
+}
+
+/* Left-to-Right Cloud Movement */
+@keyframes cloudMove {
+    0% { left: 10%; }
+    50% { left: 50%; }
+    100% { left: 80%; }
+}
+
+/* Styled Pop-Up Notification */
+.popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #8e44ad, #c39bd3);
+    color: white;
+    padding: 15px 25px;
+    font-size: 20px;
+    font-family: 'Dangrek', sans-serif;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+/* Fade In and Out Animation */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -55%); }
+    10% { opacity: 1; transform: translate(-50%, -50%); }
+    90% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -45%); }
+}
