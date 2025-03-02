@@ -27,8 +27,8 @@ body {
     width: 28vmin; 
     height: 28vmin;
     position: absolute;
-    left: 45%;
-    top: 40%;
+    left: 44%;
+    top: 39%;
 }
 
 .desk{
@@ -64,8 +64,8 @@ body {
     transform: translate(-50%, -50%);
     background: rgb(111, 55, 55);
     padding: 15px; /* Reduced padding */
-    width: 500px; /* Set a fixed width */
-    height: 500px; /* Set a fixed height */
+    width: auto; /* Set a fixed width */
+    height: auto; /* Set a fixed height */
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     display: none;
@@ -184,3 +184,43 @@ body {
 }
 
 
+.task-window {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    background: rgb(232, 166, 166);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none; /* Hidden initially */
+    z-index: 10;
+}
+
+.a_task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.timer {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+button {
+    background: rgb(108, 5, 5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: darkred;
+}

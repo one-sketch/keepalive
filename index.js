@@ -51,42 +51,48 @@ function closeShop() {
     document.getElementById("shopWindow").style.display = "none";
 }
 
-// **Task System**
+// Function to add a new task
 function addTask() {
     let taskInput = document.getElementById("newTask");
+    let durationInput = document.getElementById("taskDuration");
     let taskText = taskInput.value.trim();
-    
-    if (taskText === "") return; // Prevent empty tasks
+    let duration = parseInt(durationInput.value, 10);
+
+    if (taskText === "" || isNaN(duration) || duration <= 0) return; // Prevent empty tasks
 
     let taskId = "task-" + Date.now(); // Unique ID for task
 
+    // Create Task Element
     let li = document.createElement("li");
     li.classList.add("a_task");
     li.innerHTML = `
         ${taskText} 
+        <span class="timer" id="timer-${taskId}">${duration}:00</span>
+        <button onclick="deleteTask('${taskId}')">🗑️</button>
         <input type="checkbox" id="${taskId}" onclick="completeTask('${taskId}')">
-        <span class="timer" id="timer-${taskId}">30:00</span>
     `;
 
     document.getElementById("taskList").appendChild(li);
-    
+
+    // Start Task Timer (User-defined duration)
     tasks[taskId] = {
-        startTime: Date.now(),
-        timerInterval: startTimer(taskId)
+        duration: duration * 60, // Convert minutes to seconds
+        timerInterval: startTaskTimer(taskId)
     };
 
-    taskInput.value = ""; // Clear input field
+    taskInput.value = ""; // Clear input fields
+    durationInput.value = "";
 }
 
-// **30-Minute Timer for Task Completion**
-function startTimer(taskId) {
-    let timeLeft = 30 * 60; // 30 minutes in seconds
+// Start User-defined Task Timer
+function startTaskTimer(taskId) {
+    let timeLeft = tasks[taskId].duration;
     let timerDisplay = document.getElementById(`timer-${taskId}`);
 
     return setInterval(() => {
         if (timeLeft <= 0) {
             clearInterval(tasks[taskId].timerInterval);
-            timerDisplay.innerText = "EXPIRED";
+            startCompletionWindow(taskId); // Start the 30-min window
         } else {
             let minutes = Math.floor(timeLeft / 60);
             let seconds = timeLeft % 60;
@@ -96,7 +102,25 @@ function startTimer(taskId) {
     }, 1000);
 }
 
-// **Complete Task & Award Points**
+// Start 30-Minute Completion Window
+function startCompletionWindow(taskId) {
+    let timerDisplay = document.getElementById(`timer-${taskId}`);
+    let timeLeft = 30 * 60; // 30 minutes in seconds
+
+    let completionInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(completionInterval);
+            timerDisplay.innerText = "EXPIRED";
+        } else {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerDisplay.innerText = `Complete in: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+            timeLeft--;
+        }
+    }, 1000);
+}
+
+// Complete Task & Award Points
 function completeTask(taskId) {
     let checkBox = document.getElementById(taskId);
     if (checkBox.checked) {
@@ -104,16 +128,8 @@ function completeTask(taskId) {
         let timeLeft = 30 * 60 * 1000 - taskTime; // Convert to milliseconds
 
         if (timeLeft > 0) {
-            points += 10; // Base points
-            waterAmount += 1;
-            sunAmount += 1;
-
-            if (soilEnjoyment) {
-                points += 5; // Bonus points
-                alert(`Task completed on time! +10 points (+5 soil bonus). Total: ${points}`);
-            } else {
-                alert(`Task completed on time! +10 points. Total: ${points}`);
-            }
+            points += 10; // Base points for completing on time
+            alert(`Task completed on time! +10 points. Total: ${points}`);
         } else {
             alert("Time expired! No points awarded.");
         }
@@ -121,6 +137,14 @@ function completeTask(taskId) {
         clearInterval(tasks[taskId].timerInterval); // Stop the timer
         delete tasks[taskId]; // Remove task from tracking
     }
+}
+
+// Delete Task
+function deleteTask(taskId) {
+    let taskElement = document.getElementById(taskId).parentElement;
+    taskElement.remove(); // Remove from UI
+    clearInterval(tasks[taskId].timerInterval); // Stop the timer
+    delete tasks[taskId]; // Remove from tracking
 }
 
 // **24-Hour Clock**
