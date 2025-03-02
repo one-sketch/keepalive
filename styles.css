@@ -5,6 +5,8 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: 'Dangrek', sans-serif;
+
     background-color: #f0f8ff;
     font-family: Arial, sans-serif;
     background: url('images/background.png');
@@ -15,7 +17,7 @@ body {
 }
 
 .dangrek-regular {
-    font-family: "Dangrek", serif;
+    font-family: 'Dangrek', sans-serif;
     font-weight: 400;
     font-style: normal;
   }  
