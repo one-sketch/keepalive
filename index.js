@@ -39,12 +39,12 @@ function toggleTaskWindow() {
 }
 
 // **Shop System - Consolidated functions**
-function openShop(imageSrc) {
+function openShopWindow(imageSrc) {
     let shopWindow = document.getElementById("shopWindow");
     let shopImage = document.getElementById("shopImage");
 
-    console.log("Opening Shop:", "images/" + imageSrc);
-    
+    console.log("Opening Shop:", "images/" + imageSrc); // Debugging Log
+
     if (shopImage && shopWindow) {
         shopImage.src = "images/" + imageSrc + "?" + new Date().getTime(); // Force image refresh
         shopWindow.style.display = "block"; // Show the shop window
@@ -53,13 +53,9 @@ function openShop(imageSrc) {
     }
 }
 
-function closeShop() {
-    const shopWindow = document.getElementById("shopWindow");
-    if (shopWindow) {
-        shopWindow.style.display = "none";
-    } else {
-        console.error("Shop window not found!");
-    }
+// Ensure this function exists
+function closeShopWindow() {
+    document.getElementById("shopWindow").style.display = "none";
 }
 
 let tasks = {}; // Store tasks and their timers
