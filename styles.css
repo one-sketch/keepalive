@@ -20,7 +20,22 @@ body {
     border-color: rgb(79, 8, 79);
 }
 
+.plantshop{
 
+        position: absolute;
+        left: 60%; /* Center horizontally */
+        top: 50%; /* Center vertically */
+        transform: translate(-90%, -1000%); /* Adjust for exact centering */
+        background-color: rgba(255, 255, 255, 0.5); /* Optional: Adjust background */
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size: 20px;
+        color: black;
+        text-align: center;
+        border-radius: 5px; /* Optional: Rounded corners */
+
+    
+}
 
 .start-container {
     text-align: center;
