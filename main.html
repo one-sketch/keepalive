@@ -20,11 +20,43 @@
     <div class="click-shop shop3" onclick="openShopWindow('pot_shop.png')"></div>
     <div class="click-shop shop4" onclick="openShopWindow('dirt-shop.png')"></div>
 
-    <!-- Shop Window (Initially Hidden) -->
-    <div class="shop-window" id="shopWindow">
-        <span class="close-btn" onclick="closeShopWindow()">&times;</span>
-        <img id="shopImage" src="" alt="Shop Window">
+ <!-- Shop Window (Initially Hidden) -->
+<div class="shop-window" id="shopWindow">
+  <span class="close-btn" onclick="closeShopWindow()">&times;</span>
+  <img id="shopImage" src="" alt="Shop Window">
+
+  <!-- Buy Buttons for Light Bulbs (Hidden Initially) -->
+  <div id="bulbShop" class="shop-content hidden">
+      <button class="buy-button" onclick="buyBulb('LED')">20 Pts</button>
+      <button class="buy-button" onclick="buyBulb('Ultraviolet')">50 Pts</button>
+      <button class="buy-button" onclick="buyBulb('Fluorescent')">30 Pts</button>
+  </div>
+
+  <!-- Summon Rain Button (Hidden Initially) -->
+  <div id="rainShop" class="shop-content hidden">
+      <button class="rain-button" onclick="summonRain()">☁️ 10 Pts</button>
+  </div>
+
+    <!-- Pot Shop (Hidden Initially) -->
+    <div id="potShop" class="shop-content hidden">
+      <button class="buy-button" onclick="buyPot('smallPot')">15 Pts</button>
+      <button class="buy-button" onclick="buyPot('mediumPot')">25 Pts</button>
+      <button class="buy-button" onclick="buyPot('largePot')">40 Pts</button>
     </div>
+
+        <!-- Dirt Shop (Hidden Initially) -->
+    <div id="dirtShop" class="shop-content hidden">
+      <button class="buy-button" onclick="buyDirt('basicDirt')">10 Pts</button>
+      <button class="buy-button" onclick="buyDirt('premiumDirt')"> 20 Pts</button>
+      <button class="buy-button" onclick="buyDirt('organicDirt')"> 30 Pts</button>
+      <button class="buy-button" onclick="buyDirt('sandMix')">15 Pts</button>
+      <button class="buy-button" onclick="buyDirt('clayMix')"> 25 Pts</button>
+      <button class="buy-button" onclick="buyDirt('peatMix')"> 35 Pts</button>
+    </div>
+
+
+</div>
+
 
     <!-- Clickable Area to Open Task Window -->
     <div class="click-area" onclick="toggleTaskWindow()"></div>
