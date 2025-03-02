@@ -36,7 +36,7 @@ body {
     align-items: center;
     opacity: 1;
     visibility: visible;
-    transition: opacity 1s ease-out, visibility 1s ease-out;
+    transition: opacity .5s ease-out, visibility 1s ease-out;
     z-index: 1000; /* Ensure it covers everything */
 }
 
@@ -57,7 +57,6 @@ body {
     opacity: 1;
     visibility: visible;
 }
-
 
 .plantBuddy{
     width: 28vmin; 
