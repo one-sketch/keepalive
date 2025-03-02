@@ -12,23 +12,17 @@
     <div class="click-area" onclick="toggleTaskWindow()"></div>
   </div>
 
-<h2 class="plantshop">Plant Care</h2>
+<!-- Clickable Areas to Open Shop Windows -->
+<div class="shop-area shop1" onclick="openShopWindow('lightbulbs.png')"></div>
+<div class="shop-area shop2" onclick="openShopWindow('summon-cloud.png')"></div>
+<div class="shop-area shop3" onclick="openShopWindow('pot_shop.png')"></div>
+<div class="shop-area shop4" onclick="openShopWindow('dirt-shop.png')"></div>
 
-<div class="button-container">
-  <button class="shop-button" onclick="openShop('lightbulbs.png.png')" style="left: 1%;">Open</button>
-  <button class="shop-button" onclick="openShop('summon-cloud.png.png')" style="left: 22%;">Open</button>
-  <button class="shop-button" onclick="openShop('pot_shop.png')" style="left: 44%;">Open</button>
-  <button class="shop-button" onclick="openShop('dirt-shop.png')" style="left: 66%;">Open</button>
+<!-- Shop Window -->
+<div class="shop-window" id="shopWindow">
+    <span class="close-btn" onclick="closeShopWindow()">&times;</span>
+    <img id="shopImage" src="" alt="Shop Window">
 </div>
-
-
-<!-- Shop Window (Initially Hidden) -->
-<div id="shopWindow" class="shop-window">
-  <span class="close-btn" onclick="closeShop()">&times;</span>
-  <img id="shopImage" src="" alt="Shop Window">
-</div>
-
-
 
 
 
@@ -53,6 +47,8 @@
     <input type="text" id="newTask" placeholder="Enter new task">
     <button onclick="addTask()">Add Task</button>
 </div>
+
+
 
 
 
