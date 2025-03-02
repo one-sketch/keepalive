@@ -27,7 +27,7 @@ body {
 .shutterTransition{
     display: flex;
     background: white;
-    animation: shutter 1s;
+    animation: shutter 1s ease-out;
 }
 
 .shutterTransition[active]
