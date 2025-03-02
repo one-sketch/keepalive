@@ -9,8 +9,6 @@ function startGame() {
 function toggleTaskWindow() {
     let taskWindow = document.getElementById("taskWindow");
 
-    console.log("Book clicked. Toggling Task Window.");
-
     taskWindow.style.display = (taskWindow.style.display === "block") ? "none" : "block";
 }
 
@@ -18,12 +16,16 @@ function openShop(imageSrc) {
     let shopWindow = document.getElementById("shopWindow");
     let shopImage = document.getElementById("shopImage");
 
-    // Debugging: Check image path
+    // Debugging: Check image path in Console
     console.log("Loading image:", "images/" + imageSrc);
 
-    // Set the shop image source
-    shopImage.src = "images/" + imageSrc;
-    shopWindow.style.display = "block"; // Show the shop window
+    // Ensure the shop window is set up correctly
+    if (shopImage && shopWindow) {
+        shopImage.src = "images/" + imageSrc;
+        shopWindow.style.display = "block"; // Show the shop window
+    } else {
+        console.error("Shop window or image not found!");
+    }
 }
 
 function closeShop() {

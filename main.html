@@ -21,6 +21,12 @@
   <button class="shop-button" onclick="openShop('dirt-shop.png')" style="left: 66%;">Open</button>
 </div>
 
+<!-- Shop Window (Initially Hidden) -->
+<div id="shopWindow" class="shop-window">
+  <span class="close-btn" onclick="closeShop()">&times;</span>
+  <img id="shopImage" src="" alt="Shop Window">
+</div>
+
 <div class="click-area" onclick="toggleTaskWindow()"></div>
 
 <div class="task-window" id="taskWindow">
