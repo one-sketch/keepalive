@@ -31,11 +31,18 @@
 
 <div class="task-window" id="taskWindow">
   <h2 class="task_header">Tasks</h2>
-  <ul class="task_list">
-      <li class="a_task">Task 1 <input type="checkbox"></li>
-      <li class="a_task">Task 2 <input type="checkbox"></li>
-      <li class="a_task">Task 3 <input type="checkbox"></li>
+  
+  <!-- Display Current Time -->
+  <p id="clock"></p>
+
+  <!-- Task List -->
+  <ul class="task_list" id="taskList">
+      <!-- Tasks will be added here dynamically -->
   </ul>
+
+  <!-- Input for Adding New Tasks -->
+  <input type="text" id="newTask" placeholder="Enter new task">
+  <button onclick="addTask()">Add Task</button>
 </div>
 
     <script src="index.js"></script>
