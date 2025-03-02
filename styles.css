@@ -19,7 +19,7 @@ body {
     font-weight: 400;
     font-style: normal;
   }  
-  
+
 .plantBuddy{
     width: 28vmin; 
     height: 28vmin;
@@ -76,11 +76,8 @@ body {
     max-height: 90%; /* Prevents overflow */
 }
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 3de5fffab86abb7a285a44739d6f964cc5414eed
 .close-btn {
     position: absolute;
     top: 5px;
