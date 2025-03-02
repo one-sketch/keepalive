@@ -608,8 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-// Initial price for the raincloud
+// Initial raincloud price
 let rainCloudPrice = parseInt(localStorage.getItem("rainCloudPrice")) || 10;
 
 // Function to update the rain button text
@@ -620,21 +619,30 @@ function updateRainButton() {
     }
 }
 
-// Function to purchase a raincloud and display it
+// Function to summon rain
 function summonRain() {
     if (points >= rainCloudPrice) {
         points -= rainCloudPrice; // Deduct points
         rainCloudPrice += 10; // Increase price for next purchase
         localStorage.setItem("points", points);
         localStorage.setItem("rainCloudPrice", rainCloudPrice);
-        updatePointsDisplay(); // Update points UI
+        updatePointsDisplay(); // Refresh points UI
         updateRainButton(); // Update button price
 
         let cloudImage = document.getElementById("rainCloud");
         if (cloudImage) {
-            cloudImage.src = "images/cloud.gif"; // Set to the new rain GIF
+            cloudImage.src = "images/cloud.gif"; // Use the cloud GIF
             cloudImage.style.display = "block"; // Show the cloud
+            cloudImage.style.animation = "cloudMove 10s linear forwards"; // Apply animation
         }
+
+        // Hide the cloud after 10 seconds
+        setTimeout(() => {
+            if (cloudImage) {
+                cloudImage.style.display = "none"; // Hide cloud
+                cloudImage.style.animation = ""; // Reset animation
+            }
+        }, 10000);
 
         alert(`🌧️ Raincloud summoned! New price: ${rainCloudPrice} points.`);
     } else {
