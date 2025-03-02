@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <img src = "images/Neutral_Bud.gif" alt = "Plant Buddy" class = "plantBuddy">
+    <img id="dougImage" src = "images/Neutral_Bud.gif" alt = "Plant Buddy" class = "plantBuddy">
     <img src="images/desk.png" alt="Desk Background" class="desk">
     <div class="click-area" onclick="toggleTaskWindow()"></div>
   </div>
@@ -21,11 +21,18 @@
   <button class="shop-button" onclick="openShop('dirt-shop.png')" style="left: 66%;">Open</button>
 </div>
 
+
 <!-- Shop Window (Initially Hidden) -->
 <div id="shopWindow" class="shop-window">
   <span class="close-btn" onclick="closeShop()">&times;</span>
   <img id="shopImage" src="" alt="Shop Window">
 </div>
+
+
+
+
+
+
 
 <!-- Clickable Area to Open Task Window -->
 <div class="click-area" onclick="toggleTaskWindow()"></div>
@@ -46,6 +53,10 @@
     <input type="text" id="newTask" placeholder="Enter new task">
     <button onclick="addTask()">Add Task</button>
 </div>
+
+
+
+
 
     <script src="index.js"></script>
   </body>
