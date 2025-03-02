@@ -40,22 +40,25 @@ document.addEventListener("DOMContentLoaded", updatePointsDisplay);
 document.addEventListener("DOMContentLoaded", updatePointsDisplay);
 
 
-// **Start Game**
 function startGame() {
-    // Reset Doug's state
+    // Clear all saved data to ensure fresh start
+    localStorage.clear();
+
+    // Set default values after clearing
     localStorage.setItem("waterAmount", 0);
     localStorage.setItem("sunAmount", 0);
-    localStorage.setItem("soilEnjoyment", true);
+    localStorage.setItem("soilEnjoyment", "true"); // Stored as string
     localStorage.setItem("points", 0);
     localStorage.setItem("selectedBulb", "fluorescent");
-    localStorage.setItem("dirtType", "Basic Soil"); // Default soil type
+    localStorage.setItem("dirtType", "Sandy Soil"); // Default soil type
     localStorage.setItem("rainCloudPrice", 10); // Reset rain price
 
-    console.log("Game Reset: Doug's state is fresh!");
+    console.log("🔄 Game Reset: Doug's state is fresh!");
 
     // Reload the page to apply changes
     window.location.reload();
 }
+
 
 
 // **Open/Close Task Window**
@@ -600,6 +603,31 @@ setInterval(updateDougState, 60 * 1000);
 
 // Initialize when document is ready
 document.addEventListener("DOMContentLoaded", function() {
+
+    document.addEventListener("DOMContentLoaded", function () {
+        waterAmount = parseInt(localStorage.getItem("waterAmount")) || 0;
+        sunAmount = parseInt(localStorage.getItem("sunAmount")) || 0;
+        soilEnjoyment = localStorage.getItem("soilEnjoyment") === "true"; // Convert string to boolean
+        points = parseInt(localStorage.getItem("points")) || 0;
+        selectedBulb = localStorage.getItem("selectedBulb") || "fluorescent";
+        dirtType = localStorage.getItem("dirtType") || "Sandy Soil";
+        rainCloudPrice = parseInt(localStorage.getItem("rainCloudPrice")) || 10;
+    
+        updateDougState(); // Ensure Doug updates properly
+        updatePointsDisplay();
+        updateRainButton();
+    
+        console.log("🔄 Loaded Game State:", {
+            waterAmount,
+            sunAmount,
+            soilEnjoyment,
+            points,
+            selectedBulb,
+            dirtType,
+            rainCloudPrice
+        });
+    });
+    
     // Load initial state
     updateClock();
     updateDougState();
