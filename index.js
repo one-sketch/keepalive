@@ -573,29 +573,40 @@ function closeShopWindow() {
 }
 
 
-// Function to Buy a Light Bulb with Different Costs
-function buyBulb(bulbType) {
-    const bulbPrices = {
-        "led": 20,
-        "ultraviolet": 50,
-        "fluorescent": 30
-    };
-
-    const cost = bulbPrices[bulbType.toLowerCase()];
-
-    if (points >= cost) {
-        points -= cost;
-        selectedBulb = bulbType.toLowerCase();
-        localStorage.setItem("selectedBulb", selectedBulb);
+// Function to purchase a bulb and display it
+function purchaseBulb(bulbType, price) {
+    if (points >= price) {
+        points -= price; // Deduct points
         localStorage.setItem("points", points);
+        updatePointsDisplay(); // Refresh points UI
 
-        alert(`💡 You bought a ${bulbType} bulb! (-${cost} points)`);
-        updatePointsDisplay();
-        updateDougState(); // Update Doug's status with new bulb
+        let bulbImage = document.getElementById("purchasedBulb");
+        if (bulbImage) {
+            bulbImage.src = `images/${bulbType}.png`; // Set image source dynamically
+            bulbImage.style.display = "block"; // Show the new bulb
+        }
+
+        alert(`💡 ${bulbType.replace('.png', '')} bulb purchased!`);
     } else {
-        alert(`❌ Not enough points! ${bulbType} costs ${cost} points.`);
+        alert("❌ Not enough points!");
     }
 }
+
+// Ensure these buttons trigger the function
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("buyLED").addEventListener("click", function () {
+        purchaseBulb("led", 20);
+    });
+
+    document.getElementById("buyFluorescent").addEventListener("click", function () {
+        purchaseBulb("flourescent", 30);
+    });
+
+    document.getElementById("buyUV").addEventListener("click", function () {
+        purchaseBulb("uv", 50);
+    });
+});
+
 
 
 // Set initial price for summoning the raincloud

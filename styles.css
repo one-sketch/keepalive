@@ -342,3 +342,15 @@ button:hover {
     flex-wrap: wrap;
     width: 100%; /* Ensure buttons stay within the shop window */
 }
+
+/* Lightbulb Display (Position Under Background Lightbulb) */
+#purchasedBulb {
+    position: absolute;
+    top: 35%; /* Adjust to fit under the background bulb */
+    left: 42%;
+    transform: translateX(-50%);
+    width: 400px; /* Adjust as needed */
+    height: auto;
+    display: none; /* Hidden by default */
+    z-index: 5; /* Ensure it's visible but not above UI elements */
+}
