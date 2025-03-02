@@ -783,29 +783,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-// Prices for different pots
 const potPrices = {
-    "smallPot": 15,
-    "mediumPot": 25,
-    "largePot": 40
+    "fancy_pot": 15,
+    "terracota_pot": 25,
+    "white_plastic_cup": 40
 };
 
-
-// Function to Buy a Pot
 function buyPot(potType) {
     const cost = potPrices[potType];
 
     if (points >= cost) {
         points -= cost;
         localStorage.setItem("points", points);
-
-        showPopup(`🪴 You bought a ${potType.replace(/([A-Z])/g, " $1")}! (-${cost} points)`);
+        localStorage.setItem("selectedPot", potType);
         updatePointsDisplay();
+
+        // Show the purchased pot image
+        let potImage = document.getElementById("purchasedPot");
+        if (potImage) {
+            potImage.src = `images/${potType}.png`; // Set image source dynamically
+            potImage.style.display = "block"; // Show the new pot
+        }
+
+        showPopup(`🪴 You bought a ${potType.replace("_", " ")}! (-${cost} points)`);
     } else {
-        showPopup(`❌ Not enough points! ${potType.replace(/([A-Z])/g, " $1")} costs ${cost} points.`);
+        showPopup(`❌ Not enough points! ${potType.replace("_", " ")} costs ${cost} points.`);
     }
 }
+
+// Load the selected pot when the page refreshes
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedPot = localStorage.getItem("selectedPot");
+    if (selectedPot) {
+        let potImage = document.getElementById("purchasedPot");
+        if (potImage) {
+            potImage.src = `images/${selectedPot}.png`;
+            potImage.style.display = "block";
+        }
+    }
+});
+
 
 const dirtPrices = {
     "Sandy Soil": 10,

@@ -64,6 +64,8 @@ body {
     position: absolute;
     left: 44%;
     top: 39%;
+    z-index: 5; /* Higher than the pot */
+
 }
 
 .desk{
@@ -437,4 +439,16 @@ button:hover {
     10% { opacity: 1; transform: translate(-50%, -50%); }
     90% { opacity: 1; transform: translate(-50%, -50%); }
     100% { opacity: 0; transform: translate(-50%, -45%); }
+}
+
+/* Purchased Pot Display (Position Under Doug) */
+#purchasedPot {
+    position: absolute;
+    top: 60%; /* Adjust to align with Doug */
+    left: 52%;
+    transform: translateX(-50%);
+    width: 180px; /* Adjust size as needed */
+    height: auto;
+    display: none; /* Hide until purchased */
+    z-index: 2; /* Lower than Doug */
 }
