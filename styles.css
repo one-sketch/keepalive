@@ -24,37 +24,40 @@ body {
     font-style: normal;
 }  
 
-.shutterTransition{
-    display: flex;
+.shutterTransition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: white;
-    animation: shutter 1s ease-out;
-}
-
-.shutterTransition[active]
-{
     display: flex;
-    animation: moving;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+    z-index: 1000; /* Ensure it covers everything */
 }
 
-@keyframes moving{
-    0%{
-        transform: skewY(60px);
-    }
-    100%{
-        transform: skewY(-60px);
-    }
+.shutterTransition.active {
+    opacity: 0;
+    visibility: hidden;
 }
 
-@keyframes shutter {
-    0%{
-        display: flex;
-        opacity: 100;
-    }
-    100%{
-        display: none;
-        opacity: 0;
-    }
+/* Hide Doug and Points Box Initially */
+.hidden-during-transition {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
 }
+
+/* Show Doug and Points Box After Transition */
+.show {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 .plantBuddy{
     width: 28vmin; 

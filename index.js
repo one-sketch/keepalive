@@ -827,3 +827,24 @@ function showPopup(message) {
         popup.remove();
     }, 3000);
 }
+document.addEventListener("DOMContentLoaded", function () {
+    let shutter = document.querySelector(".shutterTransition");
+    let doug = document.getElementById("dougImage");
+    let pointsBox = document.getElementById("pointsDisplay");
+
+    // Hide Doug and Points Box Initially
+    doug.classList.add("hidden-during-transition");
+    pointsBox.classList.add("hidden-during-transition");
+
+    // Wait 1 second, then fade out the transition
+    setTimeout(() => {
+        shutter.classList.add("active");
+
+        // Show Doug and Points Box after transition ends
+        setTimeout(() => {
+            shutter.remove();
+            doug.classList.add("show");
+            pointsBox.classList.add("show");
+        }, 1000);
+    }, 1000); // Delay before fade-out starts
+});
