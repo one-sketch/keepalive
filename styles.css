@@ -358,3 +358,31 @@ button:hover {
     display: none; /* Hidden by default */
     z-index: 5; /* Ensure it's visible but not above UI elements */
 }
+
+
+
+/* Rain Cloud Animation (Appears Above Doug) */
+.rain-cloud {
+    position: absolute;
+    top: 20%; /* Adjust so it floats above Doug */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; /* Adjust based on your image */
+    height: auto;
+    display: none; /* Hidden by default */
+    z-index: 10; /* Ensures it appears above Doug */
+    opacity: 0.9; /* Slight transparency for realism */
+    
+    /* Animation: Float Up and Down */
+    animation: cloudFloat 3s infinite alternate ease-in-out;
+}
+
+/* Floating Cloud Effect */
+@keyframes cloudFloat {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
