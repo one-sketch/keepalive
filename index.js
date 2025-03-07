@@ -9,7 +9,7 @@ let waterAmount = isNaN(parseInt(localStorage.getItem("waterAmount"))) ? 0 : par
 let sunAmount = isNaN(parseInt(localStorage.getItem("sunAmount"))) ? 0 : parseInt(localStorage.getItem("sunAmount"));
 let soilEnjoyment = localStorage.getItem("soilEnjoyment") !== "false"; 
 
-// Time Configurations
+
 const waterInterval = 6 * 60 * 60 * 1000; 
 const soilCheckInterval = 2 * 24 * 60 * 60 * 1000; 
 const gameCheckInterval = 3 * 24 * 60 * 60 * 1000; 
